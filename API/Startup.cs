@@ -1,0 +1,129 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using API.Middleware;
+using Application.Interfaces;
+using Application.UserAuth;
+using Domain.UserAuth;
+using FluentValidation.AspNetCore;
+using Infrastructure.Security;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Persistence;
+
+namespace API
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+
+            services.AddControllers(opt =>
+            {
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                opt.Filters.Add(new AuthorizeFilter(policy));
+            })
+            .AddFluentValidation(cfg =>
+            {
+                cfg.RegisterValidatorsFromAssemblyContaining<Login>();
+            });
+            services.AddDbContext<HomelandContext>(opt =>
+            {
+                opt.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
+            });
+
+            //CORS Policy 
+            services.AddCors(opt =>
+         {
+             opt.AddPolicy("CorsPolicy", policy =>
+             {
+                 policy.WithOrigins("http://localhost:3000", "http://localhost:4000").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+
+             });
+         });
+            services.AddSwaggerGen(swagger =>
+            {
+                   swagger.CustomSchemaIds(type => type.ToString());
+                swagger.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+            });
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(opt =>
+            {
+                opt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = key,
+                    ValidateAudience = false,
+                    ValidateIssuer = false
+                };
+            });
+
+            var builder = services.AddIdentityCore<AppUser>();
+            var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
+            identityBuilder.AddEntityFrameworkStores<HomelandContext>();
+            identityBuilder.AddSignInManager<SignInManager<AppUser>>();
+            services.AddScoped<IJwtGenerator, JwtGenerator>();
+            services.AddMediatR(typeof(Login.Handler).Assembly);
+
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            // if (env.IsDevelopment())
+            // {
+            //     app.UseDeveloperExceptionPage();
+            //     app.UseSwagger();
+            //     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
+            // }
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+
+            app.UseSwagger();
+            app.UseSwaggerUI( c => {
+               c.SwaggerEndpoint(url: "/swagger/v1/swagger.json", name: "Homeland Api");
+                c.RoutePrefix = string.Empty;
+            });
+
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseCors("CorsPolicy");
+
+            app.UseAuthentication();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+        }
+    }
+}
