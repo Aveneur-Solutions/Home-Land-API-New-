@@ -3,11 +3,11 @@ using Domain.UserAuth;
 
 namespace Domain.UnitBooking
 {
-    public class TransferredUnit
+    public class TransferredFlat
     {
            public Guid Id  { get; set; }
-        public int UnitId  { get; set; }
-        public Unit Unit { get; set; }
+        public string FlatId  { get; set; }
+        public Flat Flat { get; set; }
         public string TransmitterId { get; set; }
         public AppUser Transmitter { get; set; }
 

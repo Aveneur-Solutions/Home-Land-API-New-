@@ -35,6 +35,15 @@ namespace Persistence.Initialize
                         PhoneNumber = "+8801680800602",
                         PhoneNumberConfirmed = true
                     }
+                    ,
+                         new AppUser{                      
+                        FirstName = "Umar",
+                        LastName = "Faiaz Moon",
+                        UserName = "Salman_Muqtadir",
+                        PhoneNumber = "+8801625203488",
+                        PhoneNumberConfirmed = true
+                    }
+
 
                 };
                 foreach (var user in users)

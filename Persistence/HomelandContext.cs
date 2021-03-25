@@ -11,10 +11,10 @@ namespace Persistence
         public HomelandContext(DbContextOptions<HomelandContext> options) : base(options)
         {
         }
-        public DbSet<Unit> Units { get; set; }
+        public DbSet<Flat> Flats { get; set; }
         public DbSet<Booking> Bookings { get; set; }
-        public DbSet<TransferredUnit> TransferredUnits { get; set; }
-        public DbSet<UnitImage> UnitImages { get; set; }
+        public DbSet<TransferredFlat> TransferredFlats { get; set; }
+        public DbSet<FlatImage> UnitImages { get; set; }
         public DbSet<Log> ActivityLogs { get; set; }
     }
 }

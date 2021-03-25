@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using API.Middleware;
 using Application.Interfaces;
+using Application.UnitRelated;
 using Application.UserAuth;
 using Domain.UserAuth;
 using FluentValidation.AspNetCore;
@@ -65,10 +66,33 @@ namespace API
 
              });
          });
-            services.AddSwaggerGen(swagger =>
+                services.AddSwaggerGen(swagger =>
             {
-                   swagger.CustomSchemaIds(type => type.ToString());
-                swagger.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+                swagger.CustomSchemaIds(type => type.ToString()); // this line solves the schema Conflict problem 
+                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\"",
+                });
+                swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                          new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
+                            },
+                            new string[] {}
+
+                    }
+                });
             });
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));
@@ -90,6 +114,7 @@ namespace API
             identityBuilder.AddSignInManager<SignInManager<AppUser>>();
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddMediatR(typeof(Login.Handler).Assembly);
+            services.AddAutoMapper(typeof(ViewFlats.Handler));
 
         }
 
