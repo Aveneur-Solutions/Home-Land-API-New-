@@ -56,33 +56,38 @@ namespace Application.UserAuth
             {
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
 
-              
-                    if (user == null)
+
+                if (user == null)
+                {
+                    user = new AppUser
                     {
-                        user = new AppUser
-                        {
-                            FirstName = request.FirstName,
-                            LastName = request.LastName,
-                            PhoneNumber = request.PhoneNumber,
-                            UserName = request.FirstName
-                        };
-                        string sixDigitNumber = RandomDigitGenerator.SixDigitNumber();
+                        FirstName = request.FirstName,
+                        LastName = request.LastName,
+                        PhoneNumber = request.PhoneNumber,
+                        UserName = request.FirstName
+                    };
+                    // string sixDigitNumber = RandomDigitGenerator.SixDigitNumber();
+                    // user.OTP = sixDigitNumber;
+                    try
+                    {
+                        string sixDigitNumber = "000000";
                         user.OTP = sixDigitNumber;
-                        var result = await _userManager.CreateAsync(user, request.Password);
-                        if (result.Succeeded)
-                        {
-                            await AuthMessageSender.SendSmsAsync(request.PhoneNumber, sixDigitNumber, _configuration);
-
-                            return Unit.Value;
-                        }
-                        else throw new RestException(HttpStatusCode.BadRequest,new {error = "Password must have 1 Capital,1 small letter , 1 Symbol and 1 number"});
-
+                        await _userManager.CreateAsync(user, request.Password);
+                        //  await AuthMessageSender.SendSmsAsync(request.PhoneNumber, sixDigitNumber, _configuration);
+                        return Unit.Value;
                     }
-                    else throw new RestException(HttpStatusCode.Conflict, new { error = "a user already exists with this number" });
-                
-               
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
 
-              //  throw new RestException(HttpStatusCode.Unauthorized, new { error = "Kichu ekta to jhamela korsen e naile ei line execute howar kotha na" });
+
+                }
+                else throw new RestException(HttpStatusCode.Conflict, new { error = "a user already exists with this number" });
+
+
+
+                //  throw new RestException(HttpStatusCode.Unauthorized, new { error = "Kichu ekta to jhamela korsen e naile ei line execute howar kotha na" });
 
 
             }
