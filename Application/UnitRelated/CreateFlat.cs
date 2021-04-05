@@ -23,7 +23,6 @@ namespace Application.UnitRelated
             public int NoOfBalconies { get; set; }
             public bool IsFeatured { get; set; }
             public double BookingPrice { get; set; }
-            public bool IsBooked { get; set; }
             public bool IsSold { get; set; }
             public int DownPaymentDays { get; set; }
         }
@@ -67,7 +66,7 @@ namespace Application.UnitRelated
                     NoOfBedrooms = request.NoOfBedrooms,
                     DownPaymentDays = request.DownPaymentDays,
                     BookingPrice = request.BookingPrice,
-                    IsFeatured = false,
+                    IsFeatured = request.IsFeatured,
                     IsBooked = false,
                     IsSold = false
                 };

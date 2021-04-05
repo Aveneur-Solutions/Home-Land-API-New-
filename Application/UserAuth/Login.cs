@@ -57,17 +57,12 @@ namespace Application.UserAuth
 
                 if (result.Succeeded)
                 {
-                  
-                    string sixDigitNumber = RandomDigitGenerator.SixDigitNumber(); // implemented in helper folder 
-                    await AuthMessageSender.SendSmsAsync(request.PhoneNumber, sixDigitNumber, _configuration);
+                    // Commented THis line temporarily
+                    // string sixDigitNumber = RandomDigitGenerator.SixDigitNumber(); // implemented in helper folder 
+                    // await AuthMessageSender.SendSmsAsync(request.PhoneNumber, sixDigitNumber, _configuration);
+                    string sixDigitNumber = "123456";
                     user.OTP = sixDigitNumber;
                     await _userManager.UpdateAsync(user);
-                    // return new UserDTO
-                    // {
-                    //     UserName = user.UserName,
-                    //     Email = user.Email,
-                    //     Token = _jwtGenerator.CreateToken(user)
-                    // };
                      return Unit.Value;
                 }
                 throw new RestException(HttpStatusCode.Unauthorized, new { error = "bhung bhang credentials dile dhukte parben na" });

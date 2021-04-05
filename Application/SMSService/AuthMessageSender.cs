@@ -19,12 +19,12 @@ namespace Application.SMSService
             // Plug in your SMS service here to send a text message.
             // Your Account SID from twilio.com/console
             // configuration["SMSAccountIdentification"];
-            var accountSid = "ACb3d16d42b137c5c7d8ccf5c7e83ac0d5";
+            var accountSid = "AC78bac3ee9dc04e78505c4b98ba63f839";
             // Your Auth Token from twilio.com/console
             // var authToken = configuration["SMSAccountPassword"];
-            var authToken = "47274eacbc054cda27e02f551fb85b4f";
+            var authToken = "c80056b3aeb5ae2de65717729e32c5ab";
             // var fromNumber = configuration["SMSAccountFrom"];
-            var fromNumber = "+12054311218";
+            var fromNumber = "+13479835360";
 
             TwilioClient.Init(accountSid, authToken);
 

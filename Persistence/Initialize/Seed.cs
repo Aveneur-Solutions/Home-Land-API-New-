@@ -16,7 +16,7 @@ namespace Persistence.Initialize
                 {
                     new AppUser{
                         FirstName = "Zulker",
-                        LastName = "Nien",
+                        LastName = "Rahman Obaidul",
                         UserName = "PervySage",
                         PhoneNumber = "+8801717755244",
                         PhoneNumberConfirmed = true
@@ -30,7 +30,7 @@ namespace Persistence.Initialize
                     },
                      new AppUser{                      
                         FirstName = "Ragib",
-                        LastName = "Ibne Hossain",
+                        LastName = "Ibne King",
                         UserName = "Insaiyan",
                         PhoneNumber = "+8801680800602",
                         PhoneNumberConfirmed = true
@@ -38,9 +38,16 @@ namespace Persistence.Initialize
                     ,
                          new AppUser{                      
                         FirstName = "Umar",
-                        LastName = "Faiaz Moon",
+                        LastName = "Faiaz Kuddus",
                         UserName = "Salman_Muqtadir",
                         PhoneNumber = "+8801625203488",
+                        PhoneNumberConfirmed = true
+                    },
+                    new AppUser{                      
+                        FirstName = "Ashikur",
+                        LastName = "Rahman Kader",
+                        UserName = "Pervy_Madara",
+                        PhoneNumber = "+8801837440069",
                         PhoneNumberConfirmed = true
                     }
 

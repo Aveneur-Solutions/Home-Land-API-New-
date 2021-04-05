@@ -15,6 +15,16 @@ namespace API.Controllers
         {
             return await Mediator.Send(new ViewFlats.Query());
         }
+        [HttpGet("featured")]
+        public async Task<ActionResult<List<FlatDTO>>> FeaturedFlatList()
+        {
+            return await Mediator.Send(new ViewFeaturedFlats.Query());
+        }
+         [HttpGet("booked")]
+        public async Task<ActionResult<List<FlatDTO>>> BookedFlatList()
+        {
+            return await Mediator.Send(new ViewBookedFlats.Query());
+        }
         [HttpGet("{id}")]
         public async Task<ActionResult<FlatDTO>> FlatList(string id)
         {
@@ -26,10 +36,16 @@ namespace API.Controllers
             return await Mediator.Send(command);
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult<Unit>> CreateFlat(string id,EditFlat.Command command)
+        public async Task<ActionResult<Unit>> EditFlat(string id,EditFlat.Command command)
         {
             command.Id = id;
             return await Mediator.Send(command);
+        }
+        [HttpPut("setFeatured/{id}")]
+        public async Task<ActionResult<Unit>> SetFeaturedFlatStatus(string id)
+        {
+           
+            return await Mediator.Send(new SetFeaturedFlatStatus.Command{ Id = id});
         }
          [HttpDelete("{id}")]
         public async Task<ActionResult<Unit>> DeleteFlat(string id)
