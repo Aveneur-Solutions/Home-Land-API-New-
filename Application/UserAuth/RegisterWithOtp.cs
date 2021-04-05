@@ -21,7 +21,6 @@ namespace Application.UserAuth
             public string PhoneNumber { get; set; }
             public string Otp { get; set; }
         }
-
         public class CommandValidator : AbstractValidator<Command>
         {
             public CommandValidator()
@@ -49,14 +48,10 @@ namespace Application.UserAuth
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
 
                 if (user == null) throw new RestException(HttpStatusCode.NotFound, new { error = "No user found with this number" });
-
-                
                     if(user.OTP == request.Otp)
                     {
                         user.PhoneNumberConfirmed = true;
-
-                        user.OTP = null;
-                             
+                        user.OTP = null;                   
                         await _userManager.UpdateAsync(user);
                         return new UserDTO
                         {
@@ -65,9 +60,7 @@ namespace Application.UserAuth
                             PhoneNumber= user.PhoneNumber                         
                         };
                     }
-                    else  throw new RestException(HttpStatusCode.Unauthorized, new { error = "bhung bhang credentials dile dhukte parben na" });
-                
-              
+                    else  throw new RestException(HttpStatusCode.Unauthorized, new { error = "bhung bhang credentials dile dhukte parben na" });                      
             }
         }
     }

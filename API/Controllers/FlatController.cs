@@ -25,6 +25,12 @@ namespace API.Controllers
         {
             return await Mediator.Send(new ViewBookedFlats.Query());
         }
+        
+        [HttpGet("bookings")]
+        public async Task<ActionResult<List<BookingDTO>>> BookingList()
+        {
+            return await Mediator.Send(new BookingList.Query());
+        }
         [HttpGet("{id}")]
         public async Task<ActionResult<FlatDTO>> FlatList(string id)
         {
@@ -52,6 +58,12 @@ namespace API.Controllers
         {
            
             return await Mediator.Send(new DeleteFlat.Command {Id = id});
+        }
+         [HttpPost("booking/{id}")]
+        public async Task<ActionResult<Unit>> BookFlat(string id,BookFlat.Command command)
+        {
+            command.FlatId = id;
+            return await Mediator.Send(command);
         }
        
     }

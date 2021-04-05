@@ -11,6 +11,6 @@ namespace Domain.DTOs
         public int NoOfBaths { get; set; }
         public int NoOfBalconies { get; set; }
         public double BookingPrice { get; set; }
-        
+        public bool IsBooked { get; set; } 
     }
 }

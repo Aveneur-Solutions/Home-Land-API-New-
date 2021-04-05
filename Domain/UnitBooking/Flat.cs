@@ -1,3 +1,6 @@
+using System;
+using System.Threading.Tasks;
+
 namespace Domain.UnitBooking
 {
     public class Flat
@@ -15,5 +18,10 @@ namespace Domain.UnitBooking
         public bool IsBooked { get; set; }
         public bool IsSold { get; set; }
         public int DownPaymentDays { get; set; }
+
+        public static implicit operator Flat(ValueTask<Flat> v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

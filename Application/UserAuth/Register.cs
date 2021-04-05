@@ -80,8 +80,6 @@ namespace Application.UserAuth
                     {
                         throw ex;
                     }
-
-
                 }
                 else throw new RestException(HttpStatusCode.Conflict, new { error = "a user already exists with this number" });
 

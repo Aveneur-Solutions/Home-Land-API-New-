@@ -11,5 +11,6 @@ namespace Domain.UnitBooking
         public DateTime DateBooked { get; set; }
         public Flat Flat { get; set; }
         public string FlatId { get; set; }
+        
     }
 }
