@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Persistence.Migrations
 {
-    public partial class ModelsUpdated : Migration
+    public partial class UpdatedNewMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -56,7 +56,9 @@ namespace Persistence.Migrations
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     Birthdate = table.Column<DateTime>(nullable: false),
-                    OTP = table.Column<string>(nullable: true)
+                    OTP = table.Column<string>(nullable: true),
+                    NID = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -197,8 +199,7 @@ namespace Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false),
-                    UserId1 = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: true),
                     DateBooked = table.Column<DateTime>(nullable: false),
                     FlatId = table.Column<string>(nullable: true)
                 },
@@ -212,8 +213,8 @@ namespace Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Bookings_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_Bookings_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -317,9 +318,9 @@ namespace Persistence.Migrations
                 column: "FlatId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bookings_UserId1",
+                name: "IX_Bookings_UserId",
                 table: "Bookings",
-                column: "UserId1");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TransferredFlats_FlatId",

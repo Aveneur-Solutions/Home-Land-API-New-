@@ -34,5 +34,11 @@ namespace API.Controllers
         {
             return await Mediator.Send(command);
         }
+
+        [HttpGet("{phonenumber}")]
+        public async Task<ActionResult<CustomerDTO>> GetUser(string phonenumber)
+        {
+         return await Mediator.Send(new GetUser.Query{PhoneNumber = phonenumber});
+        }
     }
 }

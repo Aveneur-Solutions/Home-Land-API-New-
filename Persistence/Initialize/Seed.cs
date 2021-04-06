@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.UnitBooking;
 using Domain.UserAuth;
 using Microsoft.AspNetCore.Identity;
 
@@ -8,9 +9,9 @@ namespace Persistence.Initialize
 {
     public class Seed
     {
-        public static async Task SeedData(HomelandContext context , UserManager<AppUser> userManager)
+        public static async Task SeedData(HomelandContext context, UserManager<AppUser> userManager)
         {
-              if (!userManager.Users.Any())
+            if (!userManager.Users.Any())
             {
                 var users = new List<AppUser>
                 {
@@ -28,7 +29,7 @@ namespace Persistence.Initialize
                         PhoneNumber = "+8801716590911",
                         PhoneNumberConfirmed = true
                     },
-                     new AppUser{                      
+                     new AppUser{
                         FirstName = "Ragib",
                         LastName = "Ibne King",
                         UserName = "Insaiyan",
@@ -36,14 +37,14 @@ namespace Persistence.Initialize
                         PhoneNumberConfirmed = true
                     }
                     ,
-                         new AppUser{                      
+                         new AppUser{
                         FirstName = "Umar",
                         LastName = "Faiaz Kuddus",
                         UserName = "Salman_Muqtadir",
                         PhoneNumber = "+8801625203488",
                         PhoneNumberConfirmed = true
                     },
-                    new AppUser{                      
+                    new AppUser{
                         FirstName = "Ashikur",
                         LastName = "Rahman Kader",
                         UserName = "Pervy_Madara",
@@ -57,6 +58,78 @@ namespace Persistence.Initialize
                 {
                     await userManager.CreateAsync(user, "StrongP@ssw0rd");
                 }
+
+
+            }
+            if (!context.Flats.Any())
+            {
+                var flats = new List<Flat>{
+                    new Flat{
+                    Id = "HL01",
+                    Size = 1000,
+                    Price = 20000000,
+                    Level = 10,
+                    BuildingNumber = 102,
+                    NoOfBalconies = 3,
+                    NoOfBaths =2,
+                    NoOfBedrooms = 4,
+                    DownPaymentDays = 100,
+                    BookingPrice = 100000,
+                    IsFeatured =false,
+                    IsBooked = false,
+                    IsSold = false
+                   },
+                       new Flat{
+                    Id = "HL02",
+                    Size = 1000,
+                    Price = 20000000,
+                    Level = 10,
+                    BuildingNumber = 102,
+                    NoOfBalconies = 3,
+                    NoOfBaths =2,
+                    NoOfBedrooms = 4,
+                    DownPaymentDays = 100,
+                    BookingPrice = 100000,
+                    IsFeatured =false,
+                    IsBooked = false,
+                    IsSold = false
+                   },
+                    new Flat{
+                    Id = "HL03",
+                    Size = 1000,
+                    Price = 20000000,
+                    Level = 10,
+                    BuildingNumber = 102,
+                    NoOfBalconies = 3,
+                    NoOfBaths =2,
+                    NoOfBedrooms = 4,
+                    DownPaymentDays = 100,
+                    BookingPrice = 100000,
+                    IsFeatured =false,
+                    IsBooked = false,
+                    IsSold = false
+                   },
+                       new Flat{
+                    Id = "HL04",
+                    Size = 1000,
+                    Price = 20000000,
+                    Level = 10,
+                    BuildingNumber = 102,
+                    NoOfBalconies = 3,
+                    NoOfBaths =2,
+                    NoOfBedrooms = 4,
+                    DownPaymentDays = 100,
+                    BookingPrice = 100000,
+                    IsFeatured =false,
+                    IsBooked = false,
+                    IsSold = false
+                   }
+
+                 };
+
+                await context.Flats.AddRangeAsync(flats);
+
+                await context.SaveChangesAsync();
             }
         }
     }
