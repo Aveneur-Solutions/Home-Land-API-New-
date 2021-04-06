@@ -1,0 +1,28 @@
+on: push
+name: 🚀 Deploy Backend on push
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v1.7.2
+      with:
+        dotnet-version: 5.x
+    
+    # dotnet build and publish
+    - name: Install Dependencies
+      run: dotnet restore
+    - name: Dotnet publish
+      run: dotnet publish
+
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@4.0.0
+      with: 
+        server: 173.82.103.99
+        username: zunaiddeploy
+        password: Aveneur2020
+        local-dir: ./API/bin/Debug/net5.0/publish/ 
