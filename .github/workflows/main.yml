@@ -26,5 +26,3 @@ jobs:
         username: zunaiddeploy
         password: Aveneur2020
         local-dir: ./API/bin/Debug/net5.0/publish/
-        exclude: .git*
-          - web.config
