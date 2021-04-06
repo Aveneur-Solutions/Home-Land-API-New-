@@ -60,7 +60,8 @@ namespace Application.UserAuth
                     // Commented THis line temporarily
                     // string sixDigitNumber = RandomDigitGenerator.SixDigitNumber(); // implemented in helper folder 
                     // await AuthMessageSender.SendSmsAsync(request.PhoneNumber, sixDigitNumber, _configuration);
-                    string sixDigitNumber = "123456";
+                    
+                    string sixDigitNumber = "000000";
                     user.OTP = sixDigitNumber;
                     await _userManager.UpdateAsync(user);
                      return Unit.Value;
