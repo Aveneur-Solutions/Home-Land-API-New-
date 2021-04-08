@@ -34,5 +34,11 @@ namespace API.Controllers
         {
             return await Mediator.Send(command);
         }
+
+        [HttpGet]
+        public async Task<UserDTO> GetCurrentUser()
+        {
+            return await Mediator.Send(new CurrentUser.Query());
+        }
     }
 }

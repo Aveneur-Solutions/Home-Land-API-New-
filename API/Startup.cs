@@ -66,20 +66,20 @@ namespace API
 
              });
          });
-                services.AddSwaggerGen(swagger =>
-            {
-                swagger.CustomSchemaIds(type => type.ToString()); // this line solves the schema Conflict problem 
+            services.AddSwaggerGen(swagger =>
+        {
+            swagger.CustomSchemaIds(type => type.ToString()); // this line solves the schema Conflict problem 
                 swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-                {
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT",
-                    In = ParameterLocation.Header,
-                    Description = "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\"",
-                });
-                swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
+            {
+                Name = "Authorization",
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Description = "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\"",
+            });
+            swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
                     {
                           new OpenApiSecurityScheme
                             {
@@ -92,8 +92,8 @@ namespace API
                             new string[] {}
 
                     }
-                });
             });
+        });
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -112,7 +112,9 @@ namespace API
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
             identityBuilder.AddEntityFrameworkStores<HomelandContext>();
             identityBuilder.AddSignInManager<SignInManager<AppUser>>();
+
             services.AddScoped<IJwtGenerator, JwtGenerator>();
+            services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddMediatR(typeof(Login.Handler).Assembly);
             services.AddAutoMapper(typeof(ViewFlats.Handler));
 
@@ -130,12 +132,13 @@ namespace API
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseSwagger();
-            app.UseSwaggerUI( c => {
-               c.SwaggerEndpoint(url: "/swagger/v1/swagger.json", name: "Homeland Api");
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint(url: "/swagger/v1/swagger.json", name: "Homeland Api");
                 c.RoutePrefix = string.Empty;
             });
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
 
             app.UseRouting();
 

@@ -8,9 +8,9 @@ namespace Persistence.Initialize
 {
     public class Seed
     {
-        public static async Task SeedData(HomelandContext context , UserManager<AppUser> userManager)
+        public static async Task SeedData(HomelandContext context, UserManager<AppUser> userManager)
         {
-              if (!userManager.Users.Any())
+            if (!userManager.Users.Any())
             {
                 var users = new List<AppUser>
                 {
@@ -28,7 +28,7 @@ namespace Persistence.Initialize
                         PhoneNumber = "+8801716590911",
                         PhoneNumberConfirmed = true
                     },
-                     new AppUser{                      
+                     new AppUser{
                         FirstName = "Ragib",
                         LastName = "Ibne King",
                         UserName = "Insaiyan",
@@ -36,14 +36,14 @@ namespace Persistence.Initialize
                         PhoneNumberConfirmed = true
                     }
                     ,
-                         new AppUser{                      
+                         new AppUser{
                         FirstName = "Umar",
                         LastName = "Faiaz Kuddus",
                         UserName = "Salman_Muqtadir",
                         PhoneNumber = "+8801625203488",
                         PhoneNumberConfirmed = true
                     },
-                    new AppUser{                      
+                    new AppUser{
                         FirstName = "Ashikur",
                         LastName = "Rahman Kader",
                         UserName = "Pervy_Madara",
