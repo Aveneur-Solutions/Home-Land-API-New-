@@ -34,7 +34,7 @@ namespace Application.UnitRelated
             {
                 var flats = await _context.Flats.Where(x => x.IsFeatured).ToListAsync();
                 //flats = 
-                if (flats.Capacity == 0) throw new RestException(HttpStatusCode.NoContent, new { error = "No flats are set as featured" });
+                if (flats.Capacity == 0) throw new RestException(HttpStatusCode.NotFound, new { error = "No flats are set as featured" });
 
                 var mappedFlats = _mapper.Map<List<Flat>,List<FlatDTO>>(flats);
                 

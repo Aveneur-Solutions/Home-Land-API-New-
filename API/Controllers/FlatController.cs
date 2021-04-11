@@ -31,6 +31,11 @@ namespace API.Controllers
         {
             return await Mediator.Send(new BookingList.Query());
         }
+         [HttpGet("transfers")]
+        public async Task<ActionResult<List<TransferDTO>>> TransferList()
+        {
+            return await Mediator.Send(new TransferList.Query());
+        }
         [HttpGet("{id}")]
         public async Task<ActionResult<FlatDTO>> FlatList(string id)
         {
@@ -59,10 +64,15 @@ namespace API.Controllers
            
             return await Mediator.Send(new DeleteFlat.Command {Id = id});
         }
-         [HttpPost("booking/{id}")]
-        public async Task<ActionResult<Unit>> BookFlat(string id,BookFlat.Command command)
+         [HttpPost("booking")]
+        public async Task<ActionResult<Unit>> BookFlat(BookFlat.Command command)
         {
-            command.FlatId = id;
+            return await Mediator.Send(command);
+        }
+
+          [HttpPost("transfer")]
+        public async Task<ActionResult<Unit>> TransferFlat(TransferFlat.Command command)
+        {
             return await Mediator.Send(command);
         }
        

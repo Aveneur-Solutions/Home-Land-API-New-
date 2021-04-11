@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.UnitBooking;
 using Domain.UserAuth;
 using Microsoft.AspNetCore.Identity;
 
@@ -57,6 +58,78 @@ namespace Persistence.Initialize
                 {
                     await userManager.CreateAsync(user, "StrongP@ssw0rd");
                 }
+
+
+            }
+            if (!context.Flats.Any())
+            {
+                var flats = new List<Flat>{
+                    new Flat{
+                    Id = "HL01",
+                    Size = 1000,
+                    Price = 20000000,
+                    Level = 10,
+                    BuildingNumber = 102,
+                    NoOfBalconies = 3,
+                    NoOfBaths =2,
+                    NoOfBedrooms = 4,
+                    DownPaymentDays = 100,
+                    BookingPrice = 100000,
+                    IsFeatured =false,
+                    IsBooked = false,
+                    IsSold = false
+                   },
+                       new Flat{
+                    Id = "HL02",
+                    Size = 1000,
+                    Price = 20000000,
+                    Level = 10,
+                    BuildingNumber = 102,
+                    NoOfBalconies = 3,
+                    NoOfBaths =2,
+                    NoOfBedrooms = 4,
+                    DownPaymentDays = 100,
+                    BookingPrice = 100000,
+                    IsFeatured =false,
+                    IsBooked = false,
+                    IsSold = false
+                   },
+                    new Flat{
+                    Id = "HL03",
+                    Size = 1000,
+                    Price = 20000000,
+                    Level = 10,
+                    BuildingNumber = 102,
+                    NoOfBalconies = 3,
+                    NoOfBaths =2,
+                    NoOfBedrooms = 4,
+                    DownPaymentDays = 100,
+                    BookingPrice = 100000,
+                    IsFeatured =false,
+                    IsBooked = false,
+                    IsSold = false
+                   },
+                       new Flat{
+                    Id = "HL04",
+                    Size = 1000,
+                    Price = 20000000,
+                    Level = 10,
+                    BuildingNumber = 102,
+                    NoOfBalconies = 3,
+                    NoOfBaths =2,
+                    NoOfBedrooms = 4,
+                    DownPaymentDays = 100,
+                    BookingPrice = 100000,
+                    IsFeatured =false,
+                    IsBooked = false,
+                    IsSold = false
+                   }
+
+                 };
+
+                await context.Flats.AddRangeAsync(flats);
+
+                await context.SaveChangesAsync();
             }
         }
     }
