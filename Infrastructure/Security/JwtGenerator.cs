@@ -19,11 +19,12 @@ namespace Infrastructure.Security
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));
         }
 
-        public string CreateToken(AppUser user)
+        public string CreateToken(AppUser user,string role)
         {
             var claims = new List<Claim>
              {
-                 new Claim(JwtRegisteredClaimNames.NameId, user.PhoneNumber)
+                 new Claim(JwtRegisteredClaimNames.NameId, user.PhoneNumber),
+                 new Claim(ClaimTypes.Role,role)
              };
 
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);

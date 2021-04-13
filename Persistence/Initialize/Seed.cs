@@ -9,13 +9,35 @@ namespace Persistence.Initialize
 {
     public class Seed
     {
-        public static async Task SeedData(HomelandContext context, UserManager<AppUser> userManager)
+        public static async Task SeedData(HomelandContext context, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
+            
+            if (!roleManager.Roles.Any())
+            {
+                var roles = new List<IdentityRole>{
+                    new IdentityRole{
+                        Name = "Super Admin"
+                    },
+                    new IdentityRole{
+                        Name = "Admin"
+                    },
+                    new IdentityRole{
+                        Name = "User"
+                    }
+                };
+                foreach (var role in roles)
+                {
+                    await roleManager.CreateAsync(role);
+
+                }
+               
+            }
             if (!userManager.Users.Any())
             {
                 var users = new List<AppUser>
                 {
                     new AppUser{
+                        Id = "U2",
                         FirstName = "Zulker",
                         LastName = "Rahman Obaidul",
                         UserName = "PervySage",
@@ -23,21 +45,15 @@ namespace Persistence.Initialize
                         PhoneNumberConfirmed = true
                     },
                      new AppUser{
+                         Id = "U3",
                         FirstName = "Wasif",
                         LastName = "M.Chowdhury",
                         UserName = "CEO",
                         PhoneNumber = "+8801716590911",
                         PhoneNumberConfirmed = true
                     },
-                     new AppUser{
-                        FirstName = "Ragib",
-                        LastName = "Ibne King",
-                        UserName = "Insaiyan",
-                        PhoneNumber = "+8801680800602",
-                        PhoneNumberConfirmed = true
-                    }
-                    ,
-                         new AppUser{
+                    new AppUser{
+                        Id = "U4",
                         FirstName = "Umar",
                         LastName = "Faiaz Kuddus",
                         UserName = "Salman_Muqtadir",
@@ -45,20 +61,30 @@ namespace Persistence.Initialize
                         PhoneNumberConfirmed = true
                     },
                     new AppUser{
+                        Id = "U5",
                         FirstName = "Ashikur",
                         LastName = "Rahman Kader",
                         UserName = "Pervy_Madara",
                         PhoneNumber = "+8801837440069",
                         PhoneNumberConfirmed = true
                     }
-
-
                 };
                 foreach (var user in users)
                 {
                     await userManager.CreateAsync(user, "StrongP@ssw0rd");
+                    await userManager.AddToRoleAsync(user,"User");       
                 }
-
+                 var adminUser = new AppUser
+                {
+                    Id = "U1",
+                    FirstName = "Ragib",
+                    LastName = "Ibne King",
+                    UserName = "Insaiyan",
+                    PhoneNumber = "+8801680800602",
+                    PhoneNumberConfirmed = true
+                };
+             await userManager.CreateAsync(adminUser,"VeryStrongP@ss0wrd");   
+             await userManager.AddToRoleAsync(adminUser,"Super Admin");
 
             }
             if (!context.Flats.Any())
@@ -124,7 +150,6 @@ namespace Persistence.Initialize
                     IsBooked = false,
                     IsSold = false
                    }
-
                  };
 
                 await context.Flats.AddRangeAsync(flats);

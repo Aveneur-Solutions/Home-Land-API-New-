@@ -4,42 +4,47 @@ using Application.UnitRelated;
 using Domain.DTOs;
 using Domain.UnitBooking;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    [Authorize(Roles = "Super Admin")]
     public class FlatController : BaseController
     {
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<List<FlatDTO>>> FlatList()
         {
             return await Mediator.Send(new ViewFlats.Query());
         }
         [HttpGet("featured")]
+        [AllowAnonymous]
         public async Task<ActionResult<List<FlatDTO>>> FeaturedFlatList()
         {
             return await Mediator.Send(new ViewFeaturedFlats.Query());
         }
-         [HttpGet("booked")]
+        [HttpGet("booked")]
         public async Task<ActionResult<List<FlatDTO>>> BookedFlatList()
         {
             return await Mediator.Send(new ViewBookedFlats.Query());
         }
-        
+
         [HttpGet("bookings")]
         public async Task<ActionResult<List<BookingDTO>>> BookingList()
         {
             return await Mediator.Send(new BookingList.Query());
         }
-         [HttpGet("transfers")]
+        [HttpGet("transfers")]
         public async Task<ActionResult<List<TransferDTO>>> TransferList()
         {
             return await Mediator.Send(new TransferList.Query());
         }
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<FlatDTO>> FlatList(string id)
         {
-            return await Mediator.Send(new FlatDetails.Query{ID = id});
+            return await Mediator.Send(new FlatDetails.Query { ID = id });
         }
         [HttpPost]
         public async Task<ActionResult<Unit>> CreateFlat(CreateFlat.Command command)
@@ -47,7 +52,7 @@ namespace API.Controllers
             return await Mediator.Send(command);
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult<Unit>> EditFlat(string id,EditFlat.Command command)
+        public async Task<ActionResult<Unit>> EditFlat(string id, EditFlat.Command command)
         {
             command.Id = id;
             return await Mediator.Send(command);
@@ -55,26 +60,28 @@ namespace API.Controllers
         [HttpPut("setFeatured/{id}")]
         public async Task<ActionResult<Unit>> SetFeaturedFlatStatus(string id)
         {
-           
-            return await Mediator.Send(new SetFeaturedFlatStatus.Command{ Id = id});
+
+            return await Mediator.Send(new SetFeaturedFlatStatus.Command { Id = id });
         }
-         [HttpDelete("{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<Unit>> DeleteFlat(string id)
         {
-           
-            return await Mediator.Send(new DeleteFlat.Command {Id = id});
+
+            return await Mediator.Send(new DeleteFlat.Command { Id = id });
         }
-         [HttpPost("booking")]
+        [HttpPost("booking")]
+        [Authorize]
         public async Task<ActionResult<Unit>> BookFlat(BookFlat.Command command)
         {
             return await Mediator.Send(command);
         }
 
-          [HttpPost("transfer")]
+        [HttpPost("transfer")]
+        [Authorize]
         public async Task<ActionResult<Unit>> TransferFlat(TransferFlat.Command command)
         {
             return await Mediator.Send(command);
         }
-       
+
     }
 }

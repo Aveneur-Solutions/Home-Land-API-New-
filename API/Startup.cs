@@ -109,9 +109,10 @@ namespace API
             });
 
             var builder = services.AddIdentityCore<AppUser>();
-            var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
+            var identityBuilder = new IdentityBuilder(builder.UserType,typeof(IdentityRole), builder.Services);
             identityBuilder.AddEntityFrameworkStores<HomelandContext>();
             identityBuilder.AddSignInManager<SignInManager<AppUser>>();
+            identityBuilder.AddRoleManager<RoleManager<IdentityRole>>();
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddMediatR(typeof(Login.Handler).Assembly);
             services.AddAutoMapper(typeof(ViewFlats.Handler));

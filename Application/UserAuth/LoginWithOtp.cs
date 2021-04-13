@@ -58,11 +58,18 @@ namespace Application.UserAuth
                 {
                     user.OTP = null;
                     await _userManager.UpdateAsync(user);
+                  
+                    string roleName = "";
+
+                    if(await _userManager.IsInRoleAsync(user,"Super Admin")) roleName = "Super Admin";
+                    else if(await _userManager.IsInRoleAsync(user,"Admin")) roleName = "Admin";
+                    else roleName = "User";
+
                     return new UserDTO
                     {
                         Fullname = user.FirstName+" "+user.LastName,
                         PhoneNumber = user.PhoneNumber,
-                        Token = _jwtGenerator.CreateToken(user)
+                        Token = _jwtGenerator.CreateToken(user,roleName)
                     };
                 }
                 else throw new RestException(HttpStatusCode.Unauthorized, new { error = "Faizlami Koren mia" });
