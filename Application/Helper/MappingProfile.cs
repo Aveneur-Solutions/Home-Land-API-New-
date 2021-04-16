@@ -10,6 +10,9 @@ namespace Application.Helper
         public MappingProfile()
         {
              CreateMap<Flat, FlatDTO>();
+             CreateMap<AppUser,UserDTO>();
+             CreateMap<AllotMent,AllotmentDTO>()
+             .ForMember( x => x.CustomerName,o => o.MapFrom(s => s.User.FirstName+" "+s.User.LastName));
              CreateMap<AppUser,CustomerDTO>()
               .ForMember(x => x.Fullname,o => o.MapFrom(s => s.FirstName+" "+s.LastName));
              CreateMap<Booking,BookingDTO>()
