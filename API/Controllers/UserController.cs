@@ -35,6 +35,12 @@ namespace API.Controllers
             return await Mediator.Send(command);
         }
 
+        [HttpGet]
+        public async Task<UserDTO> GetCurrentUser()
+        {
+            return await Mediator.Send(new CurrentUser.Query());
+        }
+
         [HttpGet("{phonenumber}")]
         [Authorize(Roles = "Super Admin")]
         public async Task<ActionResult<CustomerDTO>> GetUser(string phonenumber)

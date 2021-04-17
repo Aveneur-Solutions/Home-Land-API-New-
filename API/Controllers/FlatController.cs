@@ -25,6 +25,7 @@ namespace API.Controllers
             return await Mediator.Send(new ViewFeaturedFlats.Query());
         }
         [HttpGet("booked")]
+
         [Authorize(Roles = "Super Admin")]
         public async Task<ActionResult<List<FlatDTO>>> BookedFlatList()
         {
@@ -38,6 +39,7 @@ namespace API.Controllers
             return await Mediator.Send(new BookingList.Query());
         }
         [HttpGet("transfers")]
+
         [Authorize(Roles = "Super Admin")]
         public async Task<ActionResult<List<TransferDTO>>> TransferList()
         {
@@ -62,6 +64,7 @@ namespace API.Controllers
             return await Mediator.Send(command);
         }
         [HttpPut("{id}")]
+
         [Authorize(Roles = "Super Admin")]
         public async Task<ActionResult<Unit>> EditFlat(string id, EditFlat.Command command)
         {
@@ -76,6 +79,7 @@ namespace API.Controllers
             return await Mediator.Send(new SetFeaturedFlatStatus.Command { Id = id });
         }
         [HttpDelete("{id}")]
+
         [Authorize(Roles = "Super Admin")]
         public async Task<ActionResult<Unit>> DeleteFlat(string id)
         {
@@ -83,6 +87,7 @@ namespace API.Controllers
             return await Mediator.Send(new DeleteFlat.Command { Id = id });
         }
         [HttpPost("booking")]
+
         [Authorize]
         public async Task<ActionResult<Unit>> BookFlat(BookFlat.Command command)
         {
@@ -90,11 +95,13 @@ namespace API.Controllers
         }
 
         [HttpPost("transfer")]
+
         [Authorize]
         public async Task<ActionResult<Unit>> TransferFlat(TransferFlat.Command command)
         {
             return await Mediator.Send(command);
         }
+
          [HttpPost("createAllotment")]
         [Authorize(Roles = "Super Admin")]
         public async Task<ActionResult<Unit>> CreateAllotment(CreateAllotment.Command command)

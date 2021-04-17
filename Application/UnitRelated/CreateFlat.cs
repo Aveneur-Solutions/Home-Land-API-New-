@@ -55,7 +55,8 @@ namespace Application.UnitRelated
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                var flat = new Flat{
+                var flat = new Flat
+                {
                     Id = request.Id,
                     Size = request.Size,
                     Price = request.Price,
@@ -70,12 +71,12 @@ namespace Application.UnitRelated
                     IsBooked = false,
                     IsSold = false
                 };
-               await _context.Flats.AddAsync(flat);
-               var result =await _context.SaveChangesAsync() > 0;
+                await _context.Flats.AddAsync(flat);
+                var result = await _context.SaveChangesAsync() > 0;
 
-               if(result) return Unit.Value;
-               
-                throw new RestException(HttpStatusCode.Forbidden,new {error = "Couldn't Upload the flat Information"});
+                if (result) return Unit.Value;
+
+                throw new RestException(HttpStatusCode.Forbidden, new { error = "Couldn't Upload the flat Information" });
             }
         }
     }
