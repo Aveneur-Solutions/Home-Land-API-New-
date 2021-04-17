@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
 namespace Persistence.Migrations
 {
     [DbContext(typeof(HomelandContext))]
-    partial class HomelandContextModelSnapshot : ModelSnapshot
+    [Migration("20210416093144_NewPropsAddedInFlatModel")]
+    partial class NewPropsAddedInFlatModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,30 +36,6 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ActivityLogs");
-                });
-
-            modelBuilder.Entity("Domain.UnitBooking.AllotMent", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateAlloted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FlatId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FlatId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AllotMents");
                 });
 
             modelBuilder.Entity("Domain.UnitBooking.Booking", b =>
@@ -399,17 +377,6 @@ namespace Persistence.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("Domain.UnitBooking.AllotMent", b =>
-                {
-                    b.HasOne("Domain.UnitBooking.Flat", "Flat")
-                        .WithMany()
-                        .HasForeignKey("FlatId");
-
-                    b.HasOne("Domain.UserAuth.AppUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Domain.UnitBooking.Booking", b =>

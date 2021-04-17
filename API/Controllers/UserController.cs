@@ -10,7 +10,7 @@ namespace API.Controllers
     public class UserController : BaseController
     {
 
-         [HttpPost("login")]
+        [HttpPost("login")]
         [AllowAnonymous]
         public async Task<ActionResult<Unit>> Login(Login.Command command)
         {
@@ -22,7 +22,7 @@ namespace API.Controllers
         {
             return await Mediator.Send(query);
         }
-         [HttpPost("register")]
+        [HttpPost("register")]
         [AllowAnonymous]
         public async Task<ActionResult<Unit>> Register(Register.Command command)
         {
@@ -42,9 +42,10 @@ namespace API.Controllers
         }
 
         [HttpGet("{phonenumber}")]
+        [Authorize(Roles = "Super Admin")]
         public async Task<ActionResult<CustomerDTO>> GetUser(string phonenumber)
         {
-         return await Mediator.Send(new GetUser.Query{PhoneNumber = phonenumber});
+            return await Mediator.Send(new GetUser.Query { PhoneNumber = phonenumber });
         }
     }
 }

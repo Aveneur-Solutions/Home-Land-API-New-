@@ -16,7 +16,7 @@ namespace Application.UserAuth
 {
     public class RegisterWithOtp
     {
-         public class Command : IRequest<UserDTO>
+        public class Command : IRequest<UserDTO>
         {
             public string PhoneNumber { get; set; }
             public string Otp { get; set; }
@@ -30,7 +30,7 @@ namespace Application.UserAuth
             }
         }
 
-        public class Handler : IRequestHandler<Command,UserDTO>
+        public class Handler : IRequestHandler<Command, UserDTO>
         {
             private readonly HomelandContext _context;
             private readonly IJwtGenerator _jwtGenerator;
@@ -48,19 +48,23 @@ namespace Application.UserAuth
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
 
                 if (user == null) throw new RestException(HttpStatusCode.NotFound, new { error = "No user found with this number" });
-                    if(user.OTP == request.Otp)
+                if (user.OTP == request.Otp)
+                {
+                    user.PhoneNumberConfirmed = true;
+                    user.OTP = null;
+                    await _userManager.UpdateAsync(user);
+                    string roleName = "";
+                    if (await _userManager.IsInRoleAsync(user, "Super Admin")) roleName = "Super Admin";
+                    else if (await _userManager.IsInRoleAsync(user, "Admin")) roleName = "Admin";
+                    else roleName = "User";
+                    return new UserDTO
                     {
-                        user.PhoneNumberConfirmed = true;
-                        user.OTP = null;                   
-                        await _userManager.UpdateAsync(user);
-                        return new UserDTO
-                        {
-                            Token = _jwtGenerator.CreateToken(user),
-                            Fullname = user.FirstName+" "+user.LastName ,
-                            PhoneNumber= user.PhoneNumber                         
-                        };
-                    }
-                    else  throw new RestException(HttpStatusCode.Unauthorized, new { error = "bhung bhang credentials dile dhukte parben na" });                      
+                        Token = _jwtGenerator.CreateToken(user, roleName),
+                        Fullname = user.FirstName + " " + user.LastName,
+                        PhoneNumber = user.PhoneNumber
+                    };
+                }
+                else throw new RestException(HttpStatusCode.Unauthorized, new { error = "bhung bhang credentials dile dhukte parben na" });
             }
         }
     }

@@ -16,5 +16,6 @@ namespace Persistence
         public DbSet<TransferredFlat> TransferredFlats { get; set; }
         public DbSet<FlatImage> UnitImages { get; set; }
         public DbSet<Log> ActivityLogs { get; set; }
+        public DbSet<AllotMent> AllotMents { get; set; }
     }
 }

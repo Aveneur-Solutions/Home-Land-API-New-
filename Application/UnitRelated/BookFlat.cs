@@ -72,7 +72,7 @@ namespace Application.UnitRelated
                     await _context.Bookings.AddRangeAsync(bookings);
                     var result = await _context.SaveChangesAsync() > 0;
                     if (result) return Unit.Value;
-                    else throw new RestException(HttpStatusCode.Forbidden, new { error = "Couldn't Complete the booking" });
+                    else throw new RestException(HttpStatusCode.BadRequest, new { error = "Couldn't Complete the booking" });
                 }
 
                 else if (bookedFlatIds.Count >= 1)
