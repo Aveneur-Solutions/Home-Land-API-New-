@@ -21,10 +21,7 @@ namespace Application.UnitRelated
             public int NoOfBedrooms { get; set; }
             public int NoOfBaths { get; set; }
             public int NoOfBalconies { get; set; }
-            public bool IsFeatured { get; set; }
             public double BookingPrice { get; set; }
-            public bool IsBooked { get; set; }
-            public bool IsSold { get; set; }
             public int DownPaymentDays { get; set; }
         }
         public class CommandValidator : AbstractValidator<Command>
@@ -57,13 +54,9 @@ namespace Application.UnitRelated
             {
                 var flat = await _context.Flats.FindAsync(request.Id);
 
+                if (flat == null) throw new RestException(HttpStatusCode.NotFound, new { error = " No Flat found with the given id" });
 
-                if(flat == null) throw new RestException(HttpStatusCode.NotFound,new {error = " No Flat found with the given id"});
-                
                 flat.Id = request.Id;
-                flat.IsBooked = request.IsBooked;
-                flat.IsFeatured = request.IsFeatured;
-                flat.IsSold = request.IsSold;
                 flat.Level = request.Level;
                 flat.NoOfBalconies = request.NoOfBalconies;
                 flat.NoOfBaths = request.NoOfBaths;
@@ -73,15 +66,11 @@ namespace Application.UnitRelated
                 flat.BookingPrice = request.BookingPrice;
                 flat.BuildingNumber = request.BuildingNumber;
                 flat.DownPaymentDays = request.DownPaymentDays;
-              
 
-               _context.Flats.Update(flat);
-             var result = await _context.SaveChangesAsync() > 0;
+                _context.Flats.Update(flat);
+                var result = await _context.SaveChangesAsync() > 0;
 
-             if(result) return Unit.Value;
-
-
-
+                if (result) return Unit.Value;
 
                 throw new System.NotImplementedException();
             }

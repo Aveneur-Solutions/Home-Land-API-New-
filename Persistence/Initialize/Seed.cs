@@ -11,7 +11,7 @@ namespace Persistence.Initialize
     {
         public static async Task SeedData(HomelandContext context, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            
+
             if (!roleManager.Roles.Any())
             {
                 var roles = new List<IdentityRole>{
@@ -30,7 +30,7 @@ namespace Persistence.Initialize
                     await roleManager.CreateAsync(role);
 
                 }
-               
+
             }
             if (!userManager.Users.Any())
             {
@@ -72,9 +72,9 @@ namespace Persistence.Initialize
                 foreach (var user in users)
                 {
                     await userManager.CreateAsync(user, "StrongP@ssw0rd");
-                    await userManager.AddToRoleAsync(user,"User");       
+                    await userManager.AddToRoleAsync(user, "User");
                 }
-                 var adminUser = new AppUser
+                var adminUser = new AppUser
                 {
                     Id = "U1",
                     FirstName = "Ragib",
@@ -83,8 +83,8 @@ namespace Persistence.Initialize
                     PhoneNumber = "+8801680800602",
                     PhoneNumberConfirmed = true
                 };
-             await userManager.CreateAsync(adminUser,"VeryStrongP@ss0wrd");   
-             await userManager.AddToRoleAsync(adminUser,"Super Admin");
+                await userManager.CreateAsync(adminUser, "VeryStrongP@ss0wrd");
+                await userManager.AddToRoleAsync(adminUser, "Super Admin");
 
             }
             if (!context.Flats.Any())

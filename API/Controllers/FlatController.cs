@@ -64,11 +64,10 @@ namespace API.Controllers
             return await Mediator.Send(command);
         }
         [HttpPut("{id}")]
-
         [Authorize(Roles = "Super Admin")]
         public async Task<ActionResult<Unit>> EditFlat(string id, EditFlat.Command command)
         {
-            command.Id = id;
+            // command.Id = id;
             return await Mediator.Send(command);
         }
         [HttpPut("setFeatured/{id}")]

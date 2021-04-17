@@ -21,9 +21,7 @@ namespace Application.UnitRelated
             public int NoOfBedrooms { get; set; }
             public int NoOfBaths { get; set; }
             public int NoOfBalconies { get; set; }
-            public bool IsFeatured { get; set; }
             public double BookingPrice { get; set; }
-            public bool IsSold { get; set; }
             public int DownPaymentDays { get; set; }
         }
         public class CommandValidator : AbstractValidator<Command>
@@ -40,8 +38,6 @@ namespace Application.UnitRelated
                 RuleFor(x => x.NoOfBedrooms).NotEmpty();
                 RuleFor(x => x.DownPaymentDays).NotEmpty();
                 RuleFor(x => x.BookingPrice).NotEmpty();
-
-
             }
 
         }
@@ -67,7 +63,6 @@ namespace Application.UnitRelated
                     NoOfBedrooms = request.NoOfBedrooms,
                     DownPaymentDays = request.DownPaymentDays,
                     BookingPrice = request.BookingPrice,
-                    IsFeatured = request.IsFeatured,
                     IsBooked = false,
                     IsSold = false
                 };
