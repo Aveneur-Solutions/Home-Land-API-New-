@@ -33,9 +33,7 @@ namespace Application.UnitRelated
             public async Task<List<FlatDTO>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var flats = await _context.Flats.Where(x => x.IsBooked).ToListAsync();
-                //flats = 
-                if (flats.Capacity == 0) throw new RestException(HttpStatusCode.OK, new { error = "No flats are currently booked right now" });
-
+                
                 var mappedFlats = _mapper.Map<List<Flat>,List<FlatDTO>>(flats);
                 
                 return mappedFlats;

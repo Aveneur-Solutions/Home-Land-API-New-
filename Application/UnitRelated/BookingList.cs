@@ -37,7 +37,6 @@ namespace Application.UnitRelated
                 .Include(x => x.Flat)
                 .ToListAsync();
 
-                if (bookings.Capacity == 0) throw new RestException(HttpStatusCode.OK, new { error = "No booking available" });
                 var mappedBookings = _mapper.Map<List<Booking>, List<BookingDTO>>(bookings);
                 return mappedBookings;
             }

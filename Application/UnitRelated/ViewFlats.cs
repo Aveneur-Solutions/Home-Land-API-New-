@@ -34,8 +34,6 @@ namespace Application.UnitRelated
             {
                 var flats = await _context.Flats.ToListAsync();
 
-                if (flats.Capacity == 0) throw new RestException(HttpStatusCode.NoContent, new { error = "No flats available right now" });
-
                 var mappedFlats = _mapper.Map<List<Flat>,List<FlatDTO>>(flats);
                 
                 return mappedFlats;

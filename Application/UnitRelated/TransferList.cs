@@ -37,7 +37,6 @@ namespace Application.UnitRelated
                 .Include(x => x.Flat)
                 .ToListAsync();
 
-                if (transfers.Capacity == 0) throw new RestException(HttpStatusCode.OK, new { error = "No Transfers available" });
                 var mappedTransfers = _mapper.Map<List<TransferredFlat>, List<TransferDTO>>(transfers);
                 return mappedTransfers;
             }
