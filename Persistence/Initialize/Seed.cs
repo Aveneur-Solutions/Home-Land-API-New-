@@ -103,7 +103,9 @@ namespace Persistence.Initialize
                     BookingPrice = 100000,
                     IsFeatured =false,
                     IsBooked = false,
-                    IsSold = false
+                    IsSold = false,
+                    NetArea = 1000,
+                    CommonArea = 200
                    },
                        new Flat{
                     Id = "HL02",
@@ -118,7 +120,9 @@ namespace Persistence.Initialize
                     BookingPrice = 100000,
                     IsFeatured =false,
                     IsBooked = false,
-                    IsSold = false
+                    IsSold = false,
+                     NetArea = 1000,
+                    CommonArea = 200
                    },
                     new Flat{
                     Id = "HL03",
@@ -133,7 +137,9 @@ namespace Persistence.Initialize
                     BookingPrice = 100000,
                     IsFeatured =false,
                     IsBooked = false,
-                    IsSold = false
+                    IsSold = false,
+                     NetArea = 1000,
+                    CommonArea = 200
                    },
                        new Flat{
                     Id = "HL04",
@@ -148,7 +154,9 @@ namespace Persistence.Initialize
                     BookingPrice = 100000,
                     IsFeatured =false,
                     IsBooked = false,
-                    IsSold = false
+                    IsSold = false,
+                     NetArea = 1000,
+                    CommonArea = 200
                    }
                  };
 
