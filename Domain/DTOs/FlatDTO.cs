@@ -14,6 +14,6 @@ namespace Domain.DTOs
         public bool IsBooked { get; set; }
         public int DownPaymentDays { get; set; }
         public double NetArea { get; set; }
-        public double CommonArea { get; set; }
+        public double CommonArea { get; set; } 
     }
 }
