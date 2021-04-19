@@ -84,9 +84,6 @@ namespace Application.UserAuth
                 else throw new RestException(HttpStatusCode.Conflict, new { error = "a user already exists with this number" });
 
 
-                //  throw new RestException(HttpStatusCode.Unauthorized, new { error = "Kichu ekta to jhamela korsen e naile ei line execute howar kotha na" });
-
-
             }
         }
     }
