@@ -1,4 +1,5 @@
 using Domain.ActivityTracking;
+using Domain.Common;
 using Domain.UnitBooking;
 using Domain.UserAuth;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -17,5 +18,6 @@ namespace Persistence
         public DbSet<FlatImage> UnitImages { get; set; }
         public DbSet<Log> ActivityLogs { get; set; }
         public DbSet<AllotMent> AllotMents { get; set; }
+        public DbSet<Image> Images {get; set;} 
     }
 }

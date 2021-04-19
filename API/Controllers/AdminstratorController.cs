@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Adminstrator;
 using Domain.DTOs;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -15,6 +17,11 @@ namespace API.Controllers
         {
             return await Mediator.Send(new GetAllUsers.Query());
         }
-        
+        [HttpPost("Gallery")]
+        public async Task<ActionResult<Unit>> UploadPhotoToGallery([FromForm]ImageUpload.Command command)
+        {
+            // command.File = file;
+            return await Mediator.Send(command);
+        }
     }
 }
