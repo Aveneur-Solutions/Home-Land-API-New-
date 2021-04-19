@@ -159,7 +159,17 @@ namespace Persistence.Initialize
                     CommonArea = 200
                    }
                  };
-
+                 var flatImages = new List<FlatImage>{};
+                foreach(var flat in flats)
+                {
+                    var flatImage = new FlatImage{
+                      Flat = flat,
+                      ImageLocation = "Flat1 - Copy.jpg"
+                    };
+                    flatImages.Add(flatImage);
+                    
+                }
+                await context.UnitImages.AddRangeAsync(flatImages);
                 await context.Flats.AddRangeAsync(flats);
 
                 await context.SaveChangesAsync();

@@ -59,7 +59,7 @@ namespace API.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "Super Admin")]
-        public async Task<ActionResult<Unit>> CreateFlat(CreateFlat.Command command)
+        public async Task<ActionResult<Unit>> CreateFlat([FromForm]CreateFlat.Command command)
         {
             return await Mediator.Send(command);
         }

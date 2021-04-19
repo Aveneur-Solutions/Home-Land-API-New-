@@ -1,10 +1,14 @@
+using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Helper;
 using Domain.Errors;
 using Domain.UnitBooking;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Persistence;
 
 namespace Application.UnitRelated
@@ -23,6 +27,7 @@ namespace Application.UnitRelated
             public int NoOfBalconies { get; set; }
             public double BookingPrice { get; set; }
             public int DownPaymentDays { get; set; }
+            public List<IFormFile> Images { get; set; }
         }
         public class CommandValidator : AbstractValidator<Command>
         {
@@ -44,8 +49,10 @@ namespace Application.UnitRelated
         public class Handler : IRequestHandler<Command>
         {
             private readonly HomelandContext _context;
-            public Handler(HomelandContext context)
+            private readonly IWebHostEnvironment _env;
+            public Handler(HomelandContext context, IWebHostEnvironment env)
             {
+                _env = env;
                 _context = context;
             }
 
@@ -66,6 +73,24 @@ namespace Application.UnitRelated
                     IsBooked = false,
                     IsSold = false
                 };
+
+               var images =  FileUpload.UploadImage(request.Images,_env,"Flat");
+               var imageListToBeAdded = new List<FlatImage>{};
+           
+               foreach (var image in images)
+               {
+                   var imageToBeAdded = new FlatImage{
+                       Flat = flat,
+                       ImageLocation = image
+                   };
+                   imageListToBeAdded.Add(imageToBeAdded);
+               }
+               
+                 if(imageListToBeAdded.Count > 0) 
+                 {
+                  await  _context.UnitImages.AddRangeAsync(imageListToBeAdded);
+                 }
+
                 await _context.Flats.AddAsync(flat);
                 var result = await _context.SaveChangesAsync() > 0;
 

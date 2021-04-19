@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Helper;
 using Application.Interfaces;
-using Application.SMSService;
 using Domain.Errors;
 using Domain.UserAuth;
 using FluentValidation;

@@ -32,7 +32,7 @@ namespace Application.UnitRelated
 
             public async Task<List<FlatDTO>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var flats = await _context.Flats.Where(x => x.IsBooked).ToListAsync();
+                var flats = await _context.Flats.Where(x => x.IsBooked).Include(x => x.Images).ToListAsync();
                 
                 var mappedFlats = _mapper.Map<List<Flat>,List<FlatDTO>>(flats);
                 
