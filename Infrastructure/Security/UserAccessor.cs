@@ -20,5 +20,11 @@ namespace Infrastructure.Security
 
             return phoneNo;
         }
+        public string GetUserRole()
+        {
+            var role = _httpContextAccessor.HttpContext.User?.Claims?
+                     .FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+            return role;
+        }
     }
 }

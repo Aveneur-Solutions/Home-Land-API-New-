@@ -3,7 +3,7 @@ using Domain.UserAuth;
 
 namespace Domain.UnitBooking
 {
-    public class TransferredFlat
+    public class Transfer
     {
         public Guid Id  { get; set; }
         public string FlatId  { get; set; }

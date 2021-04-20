@@ -85,9 +85,9 @@ namespace API.Controllers
 
             return await Mediator.Send(new DeleteFlat.Command { Id = id });
         }
-        [HttpPost("booking")]
+        [HttpPost("bookNow")]
 
-        [Authorize]
+        [Authorize(Roles = "User")]
         public async Task<ActionResult<Unit>> BookFlat(BookFlat.Command command)
         {
             return await Mediator.Send(command);
@@ -95,7 +95,7 @@ namespace API.Controllers
 
         [HttpPost("transfer")]
 
-        [Authorize]
+        [Authorize(Roles = "User")]
         public async Task<ActionResult<Unit>> TransferFlat(TransferFlat.Command command)
         {
             return await Mediator.Send(command);

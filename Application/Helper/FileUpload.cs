@@ -1,12 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
-using Domain.Errors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-
 namespace Application.Helper
 {
     public static class FileUpload
@@ -37,9 +33,9 @@ namespace Application.Helper
                                 fileNames.Add( fName + file.FileName);
                             }
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
-                            throw ex;
+                            throw;
                         }
                     }
                 }
