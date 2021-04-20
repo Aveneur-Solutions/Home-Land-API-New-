@@ -10,8 +10,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(HomelandContext))]
-    [Migration("20210419210817_FlatImageModelUpdated")]
-    partial class FlatImageModelUpdated
+    [Migration("20210420154549_On Delete Action added for flats")]
+    partial class OnDeleteActionaddedforflats
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -174,7 +174,7 @@ namespace Persistence.Migrations
                     b.ToTable("UnitImages");
                 });
 
-            modelBuilder.Entity("Domain.UnitBooking.TransferredFlat", b =>
+            modelBuilder.Entity("Domain.UnitBooking.Transfer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -443,10 +443,11 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.UnitBooking.Flat", "Flat")
                         .WithMany("Images")
-                        .HasForeignKey("FlatId");
+                        .HasForeignKey("FlatId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Domain.UnitBooking.TransferredFlat", b =>
+            modelBuilder.Entity("Domain.UnitBooking.Transfer", b =>
                 {
                     b.HasOne("Domain.UnitBooking.Flat", "Flat")
                         .WithMany()

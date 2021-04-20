@@ -10,8 +10,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(HomelandContext))]
-    [Migration("20210419090008_Image Table Added")]
-    partial class ImageTableAdded
+    [Migration("20210420154018_Updated Migration")]
+    partial class UpdatedMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -161,10 +161,7 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("FlatId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("FlatId1")
+                    b.Property<string>("FlatId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ImageLocation")
@@ -172,12 +169,12 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FlatId1");
+                    b.HasIndex("FlatId");
 
                     b.ToTable("UnitImages");
                 });
 
-            modelBuilder.Entity("Domain.UnitBooking.TransferredFlat", b =>
+            modelBuilder.Entity("Domain.UnitBooking.Transfer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -445,11 +442,11 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.UnitBooking.FlatImage", b =>
                 {
                     b.HasOne("Domain.UnitBooking.Flat", "Flat")
-                        .WithMany()
-                        .HasForeignKey("FlatId1");
+                        .WithMany("Images")
+                        .HasForeignKey("FlatId");
                 });
 
-            modelBuilder.Entity("Domain.UnitBooking.TransferredFlat", b =>
+            modelBuilder.Entity("Domain.UnitBooking.Transfer", b =>
                 {
                     b.HasOne("Domain.UnitBooking.Flat", "Flat")
                         .WithMany()
