@@ -18,7 +18,6 @@ namespace Application.UnitRelated
     {
         public class Command : IRequest
         {
-            public string TransmitterPhoneNumber { get; set; }
             public string RecieverPhoneNumber { get; set; }
             public List<string> FlatIds { get; set; }
 
@@ -27,7 +26,6 @@ namespace Application.UnitRelated
         {
             public CommandValidator()
             {
-                RuleFor(x => x.TransmitterPhoneNumber).NotEmpty();
                 RuleFor(x => x.RecieverPhoneNumber).NotEmpty();
                 RuleFor(x => x.FlatIds).NotEmpty();
             }
@@ -47,7 +45,7 @@ namespace Application.UnitRelated
             {   
                     var reciever = await _context.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.RecieverPhoneNumber);
                     if (reciever == null) throw new RestException(HttpStatusCode.NotFound, new { error = "Kaare pathaite chaan bujhlam na . Account nai to ei number e kono" });
-                    var sender = await _context.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.TransmitterPhoneNumber);
+                    var sender = await _context.Users.FirstOrDefaultAsync(x => x.PhoneNumber == _userAccessor.GetUserPhoneNo());
                     if (sender == null) throw new RestException(HttpStatusCode.NotFound, new { error = "Nijer e account nai abar transfer korte chai . WOW " });
                     if (sender.PhoneNumber == reciever.PhoneNumber) throw new RestException(HttpStatusCode.BadRequest, new { error = "Nijeke nije transfer korte paarben na . Eto self love bhalo na." });
 
