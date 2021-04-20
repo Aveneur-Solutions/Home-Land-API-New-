@@ -172,7 +172,7 @@ namespace Persistence.Migrations
                     b.ToTable("UnitImages");
                 });
 
-            modelBuilder.Entity("Domain.UnitBooking.TransferredFlat", b =>
+            modelBuilder.Entity("Domain.UnitBooking.Transfer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -441,10 +441,11 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.UnitBooking.Flat", "Flat")
                         .WithMany("Images")
-                        .HasForeignKey("FlatId");
+                        .HasForeignKey("FlatId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Domain.UnitBooking.TransferredFlat", b =>
+            modelBuilder.Entity("Domain.UnitBooking.Transfer", b =>
                 {
                     b.HasOne("Domain.UnitBooking.Flat", "Flat")
                         .WithMany()

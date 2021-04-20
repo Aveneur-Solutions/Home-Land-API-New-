@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Persistence.Migrations
 {
-    public partial class FlatImageModelUpdated : Migration
+    public partial class UpdatedMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,6 +26,19 @@ namespace Persistence.Migrations
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier");
 
+            migrationBuilder.CreateTable(
+                name: "Images",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    ImageLocation = table.Column<string>(nullable: true),
+                    Section = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.Id);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_UnitImages_FlatId",
                 table: "UnitImages",
@@ -45,6 +58,9 @@ namespace Persistence.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_UnitImages_Flats_FlatId",
                 table: "UnitImages");
+
+            migrationBuilder.DropTable(
+                name: "Images");
 
             migrationBuilder.DropIndex(
                 name: "IX_UnitImages_FlatId",
