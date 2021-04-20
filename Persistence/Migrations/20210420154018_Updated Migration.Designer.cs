@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
 namespace Persistence.Migrations
 {
     [DbContext(typeof(HomelandContext))]
-    partial class HomelandContextModelSnapshot : ModelSnapshot
+    [Migration("20210420154018_Updated Migration")]
+    partial class UpdatedMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -441,8 +443,7 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.UnitBooking.Flat", "Flat")
                         .WithMany("Images")
-                        .HasForeignKey("FlatId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("FlatId");
                 });
 
             modelBuilder.Entity("Domain.UnitBooking.Transfer", b =>

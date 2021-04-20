@@ -1,4 +1,5 @@
 using Domain.ActivityTracking;
+using Domain.Common;
 using Domain.UnitBooking;
 using Domain.UserAuth;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -13,9 +14,23 @@ namespace Persistence
         }
         public DbSet<Flat> Flats { get; set; }
         public DbSet<Booking> Bookings { get; set; }
-        public DbSet<TransferredFlat> TransferredFlats { get; set; }
+        public DbSet<Transfer> TransferredFlats { get; set; }
         public DbSet<FlatImage> UnitImages { get; set; }
         public DbSet<Log> ActivityLogs { get; set; }
         public DbSet<AllotMent> AllotMents { get; set; }
+        public DbSet<Image> Images { get; set; }
+
+           protected override void OnModelCreating(ModelBuilder builder)
+        {
+
+            base.OnModelCreating(builder);
+
+            builder.Entity<Flat>()
+                   .HasMany<FlatImage>( x => x.Images)
+                   .WithOne( x => x.Flat)
+                   .HasForeignKey( x => x.FlatId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
+        }
     }
 }

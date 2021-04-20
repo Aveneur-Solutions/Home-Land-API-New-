@@ -9,7 +9,9 @@ namespace Application.Helper
     {
         public MappingProfile()
         {
-             CreateMap<Flat, FlatDTO>();
+             CreateMap<Flat, FlatDTO>()
+             .ForMember(x => x.Images, o => o.MapFrom(s => s.Images));
+             CreateMap<FlatImage,ImageDTO>();
              CreateMap<AppUser,UserDTO>();
              CreateMap<AllotMent,AllotmentDTO>()
              .ForMember( x => x.CustomerName,o => o.MapFrom(s => s.User.FirstName+" "+s.User.LastName));
@@ -17,7 +19,7 @@ namespace Application.Helper
               .ForMember(x => x.Fullname,o => o.MapFrom(s => s.FirstName+" "+s.LastName));
              CreateMap<Booking,BookingDTO>()
              .ForMember(x => x.CustomerName, o => o.MapFrom(s => s.User.FirstName));
-             CreateMap<TransferredFlat,TransferDTO>()
+             CreateMap<Transfer,TransferDTO>()
               .ForMember(x => x.TransferredFrom,o => o.MapFrom(s => s.Transmitter.FirstName))
               .ForMember(x => x.TransferredTo,o => o.MapFrom(s => s.Reciever.FirstName));
         }

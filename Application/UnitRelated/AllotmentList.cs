@@ -35,11 +35,7 @@ namespace Application.UnitRelated
                 .Include(x => x.Flat)
                 .Include(x => x.User)
                 .ToListAsync();
-
-                if (allotments.Capacity == 0) throw new RestException(HttpStatusCode.NoContent, new { error = "No Allotments available right now" });
-
-                var mappedAllotments = _mapper.Map<List<AllotMent>,List<AllotmentDTO>>(allotments);
-                
+                var mappedAllotments = _mapper.Map<List<AllotMent>,List<AllotmentDTO>>(allotments);            
                 return mappedAllotments;
             }
         }

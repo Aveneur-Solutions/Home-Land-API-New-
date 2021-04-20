@@ -61,7 +61,8 @@ namespace Application.UserAuth
                     {
                         Token = _jwtGenerator.CreateToken(user, roleName),
                         Fullname = user.FirstName + " " + user.LastName,
-                        PhoneNumber = user.PhoneNumber
+                        PhoneNumber = user.PhoneNumber,
+                        Role = roleName
                     };
                 }
                 else throw new RestException(HttpStatusCode.Unauthorized, new { error = "bhung bhang credentials dile dhukte parben na" });

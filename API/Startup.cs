@@ -59,14 +59,13 @@ namespace API
          {
              opt.AddPolicy("CorsPolicy", policy =>
              {
-                 policy.WithOrigins("http://localhost:3000", "http://localhost:4000").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
-
+                 policy.WithOrigins("http://localhost:3000", "http://localhost:4000", "https://betahomeland.aveneur.com").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
              });
          });
             services.AddSwaggerGen(swagger =>
         {
             swagger.CustomSchemaIds(type => type.ToString()); // this line solves the schema Conflict problem 
-                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+            swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
             {
                 Name = "Authorization",
                 Type = SecuritySchemeType.ApiKey,
@@ -87,7 +86,6 @@ namespace API
                                 }
                             },
                             new string[] {}
-
                     }
             });
         });
@@ -106,7 +104,7 @@ namespace API
             });
 
             var builder = services.AddIdentityCore<AppUser>();
-            var identityBuilder = new IdentityBuilder(builder.UserType,typeof(IdentityRole), builder.Services);
+            var identityBuilder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
             identityBuilder.AddEntityFrameworkStores<HomelandContext>();
             identityBuilder.AddSignInManager<SignInManager<AppUser>>();
             identityBuilder.AddRoleManager<RoleManager<IdentityRole>>();
@@ -121,7 +119,7 @@ namespace API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-          
+
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseSwagger();

@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Helper;
 using Application.Interfaces;
-using Application.SMSService;
 using Domain.Errors;
 using Domain.UserAuth;
 using FluentValidation;
@@ -73,6 +72,7 @@ namespace Application.UserAuth
                         string sixDigitNumber = "000000";
                         user.OTP = sixDigitNumber;
                         await _userManager.CreateAsync(user, request.Password);
+                        await _userManager.AddToRoleAsync(user,"User");
                         //  await AuthMessageSender.SendSmsAsync(request.PhoneNumber, sixDigitNumber, _configuration);
                         return Unit.Value;
                     }
@@ -82,10 +82,6 @@ namespace Application.UserAuth
                     }
                 }
                 else throw new RestException(HttpStatusCode.Conflict, new { error = "a user already exists with this number" });
-
-
-
-                //  throw new RestException(HttpStatusCode.Unauthorized, new { error = "Kichu ekta to jhamela korsen e naile ei line execute howar kotha na" });
 
 
             }

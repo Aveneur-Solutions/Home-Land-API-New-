@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using Domain.UnitBooking;
+
 namespace Domain.DTOs
 {
     public class FlatDTO
@@ -15,5 +18,6 @@ namespace Domain.DTOs
         public int DownPaymentDays { get; set; }
         public double NetArea { get; set; }
         public double CommonArea { get; set; } 
+        public ICollection<ImageDTO> Images { get; set; }
     }
 }
