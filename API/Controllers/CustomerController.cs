@@ -2,22 +2,28 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Customer;
 using Domain.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+     [Authorize(Roles = "User")]
     public class CustomerController : BaseController
     {
-        [HttpGet("myAllotments/{phoneNumber}")]
-        public async Task<ActionResult<List<AllotmentDTO>>> MyAllotments(string phoneNumber)
+        [HttpGet("myAllotments")]
+        public async Task<ActionResult<List<AllotmentDTO>>> MyAllotments()
         {
-             return await Mediator.Send(new MyAllotments.Query{ PhoneNo = phoneNumber});
+            return await Mediator.Send(new MyAllotments.Query { });
         }
-         [HttpGet("myBookings/{phoneNumber}")]
-        public async Task<ActionResult<List<BookingDTO>>> MyBookings(string phoneNumber)
+        [HttpGet("myBookings")]
+        public async Task<ActionResult<List<BookingDTO>>> MyBookings()
         {
-             return await Mediator.Send(new MyBookings.Query{PhoneNo = phoneNumber});
+            return await Mediator.Send(new MyBookings.Query { });
         }
-        
+        [HttpGet("myTransfers")]
+        public async Task<ActionResult<List<TransferDTO>>> MyTransfers()
+        {
+            return await Mediator.Send(new MyTransfers.Query { });
+        }
     }
 }

@@ -37,7 +37,7 @@ namespace Application.UnitRelated
                 .Include(x => x.Flat)
                 .ToListAsync();
 
-                var mappedTransfers = _mapper.Map<List<TransferredFlat>, List<TransferDTO>>(transfers);
+                var mappedTransfers = _mapper.Map<List<Transfer>, List<TransferDTO>>(transfers);
                 return mappedTransfers;
             }
         }

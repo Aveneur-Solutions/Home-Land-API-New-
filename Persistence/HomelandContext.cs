@@ -14,7 +14,7 @@ namespace Persistence
         }
         public DbSet<Flat> Flats { get; set; }
         public DbSet<Booking> Bookings { get; set; }
-        public DbSet<TransferredFlat> TransferredFlats { get; set; }
+        public DbSet<Transfer> TransferredFlats { get; set; }
         public DbSet<FlatImage> UnitImages { get; set; }
         public DbSet<Log> ActivityLogs { get; set; }
         public DbSet<AllotMent> AllotMents { get; set; }
