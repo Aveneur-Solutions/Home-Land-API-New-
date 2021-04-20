@@ -72,6 +72,7 @@ namespace Application.UserAuth
                         string sixDigitNumber = "000000";
                         user.OTP = sixDigitNumber;
                         await _userManager.CreateAsync(user, request.Password);
+                        await _userManager.AddToRoleAsync(user,"User");
                         //  await AuthMessageSender.SendSmsAsync(request.PhoneNumber, sixDigitNumber, _configuration);
                         return Unit.Value;
                     }
