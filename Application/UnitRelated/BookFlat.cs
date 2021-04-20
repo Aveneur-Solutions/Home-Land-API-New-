@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Interfaces;
 using Domain.Errors;
 using Domain.UnitBooking;
 using FluentValidation;
@@ -16,29 +17,29 @@ namespace Application.UnitRelated
     {
         public class Command : IRequest
         {
-            public string PhoneNumber { get; set; }
             public List<string> FlatIds { get; set; }
-
         }
         public class CommandValidator : AbstractValidator<Command>
         {
             public CommandValidator()
             {
-                RuleFor(x => x.PhoneNumber).NotEmpty();
+                RuleFor(x => x.FlatIds).NotEmpty();
             }
         }
 
         public class Handler : IRequestHandler<Command>
         {
             private readonly HomelandContext _context;
-            public Handler(HomelandContext context)
+            private readonly IUserAccessor _userAccessor;
+            public Handler(HomelandContext context, IUserAccessor userAccessor)
             {
+                _userAccessor = userAccessor;
                 _context = context;
             }
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                var user = await _context.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
+                var user = await _context.Users.FirstOrDefaultAsync(x => x.PhoneNumber == _userAccessor.GetUserPhoneNo());
                 if (user == null) throw new RestException(HttpStatusCode.NotFound, new { error = "You don't have any account here with this number . sorry" });
 
 

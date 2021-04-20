@@ -32,20 +32,20 @@ namespace API.Controllers
             return await Mediator.Send(new ViewBookedFlats.Query());
         }
 
-        [HttpGet("bookings")]
+        [HttpGet("allBookings")]
         [Authorize(Roles = "Super Admin")]
         public async Task<ActionResult<List<BookingDTO>>> BookingList()
         {
             return await Mediator.Send(new BookingList.Query());
         }
-        [HttpGet("transfers")]
+        [HttpGet("allTransfers")]
 
         [Authorize(Roles = "Super Admin")]
         public async Task<ActionResult<List<TransferDTO>>> TransferList()
         {
             return await Mediator.Send(new TransferList.Query());
         }
-          [HttpGet("allotments")]
+          [HttpGet("allAllotments")]
         [Authorize(Roles = "Super Admin")]
         public async Task<ActionResult<List<AllotmentDTO>>> AllotmentList()
         {
@@ -93,7 +93,7 @@ namespace API.Controllers
             return await Mediator.Send(command);
         }
 
-        [HttpPost("transfer")]
+        [HttpPost("transferNow")]
 
         [Authorize(Roles = "User")]
         public async Task<ActionResult<Unit>> TransferFlat(TransferFlat.Command command)
