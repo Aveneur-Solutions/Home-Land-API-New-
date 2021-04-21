@@ -155,19 +155,20 @@ namespace Persistence.Initialize
                     IsFeatured =false,
                     IsBooked = false,
                     IsSold = false,
-                     NetArea = 1000,
+                    NetArea = 1000,
                     CommonArea = 200
                    }
                  };
-                 var flatImages = new List<FlatImage>{};
-                foreach(var flat in flats)
+                var flatImages = new List<FlatImage> { };
+                foreach (var flat in flats)
                 {
-                    var flatImage = new FlatImage{
-                      Flat = flat,
-                      ImageLocation = "Flat1 - Copy.jpg"
+                    var flatImage = new FlatImage
+                    {
+                        Flat = flat,
+                        ImageLocation = "Flat1 - Copy.jpg"
                     };
                     flatImages.Add(flatImage);
-                    
+
                 }
                 await context.UnitImages.AddRangeAsync(flatImages);
                 await context.Flats.AddRangeAsync(flats);

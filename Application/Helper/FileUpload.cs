@@ -10,16 +10,16 @@ namespace Application.Helper
 
         public static List<string> UploadImage(List<IFormFile> files, IWebHostEnvironment environment, string folderName = null)
         {
-            var fileNames = new List<string> {};
+            var fileNames = new List<string> { };
             if (files.Count > 0)
             {
-                
+
 
                 foreach (var file in files)
                 {
                     if (file.Length > 0)
                     {
-                        var fName = folderName != null ? "\\"+folderName+"\\" : "\\Images\\";
+                        var fName = folderName != null ? "\\" + folderName + "\\" : "\\Images\\";
                         try
                         {
                             if (!Directory.Exists(environment.WebRootPath + fName))
@@ -30,7 +30,7 @@ namespace Application.Helper
                             {
                                 file.CopyTo(filestream);
                                 filestream.Flush();
-                                fileNames.Add( fName + file.FileName);
+                                fileNames.Add(fName + file.FileName);
                             }
                         }
                         catch (Exception)
@@ -40,8 +40,8 @@ namespace Application.Helper
                     }
                 }
             }
-          
-           return fileNames;
+
+            return fileNames;
 
 
         }
