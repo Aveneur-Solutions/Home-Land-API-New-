@@ -64,7 +64,7 @@ namespace API.Controllers
         }
         [HttpPut("{id}")]
         [Authorize(Roles = "Super Admin")]
-        public async Task<ActionResult<Unit>> EditFlat(string id, EditFlat.Command command)
+        public async Task<ActionResult<Unit>> EditFlat(string id, [FromForm]EditFlat.Command command)
         {
             // command.Id = id;
             return await Mediator.Send(command);
