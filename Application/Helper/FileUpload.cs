@@ -13,8 +13,6 @@ namespace Application.Helper
             var fileNames = new List<string> { };
             if (files.Count > 0)
             {
-
-
                 foreach (var file in files)
                 {
                     if (file.Length > 0)
@@ -30,7 +28,8 @@ namespace Application.Helper
                             {
                                 file.CopyTo(filestream);
                                 filestream.Flush();
-                                fileNames.Add(fName + file.FileName);
+                                
+                                fileNames.Add(fName + Guid.NewGuid().ToString()+ file.FileName);
                             }
                         }
                         catch (Exception)

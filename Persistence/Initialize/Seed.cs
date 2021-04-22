@@ -165,14 +165,12 @@ namespace Persistence.Initialize
                     var flatImage = new FlatImage
                     {
                         Flat = flat,
-                        ImageLocation = "Flat1 - Copy.jpg"
+                        ImageLocation = "\\Flat\\Flat1 - Copy.jpg"
                     };
                     flatImages.Add(flatImage);
-
                 }
                 await context.UnitImages.AddRangeAsync(flatImages);
                 await context.Flats.AddRangeAsync(flats);
-
                 await context.SaveChangesAsync();
             }
         }

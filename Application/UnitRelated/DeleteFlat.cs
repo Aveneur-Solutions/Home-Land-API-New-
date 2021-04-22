@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace Application.UnitRelated
     {
         public class Command : IRequest
         {
-           public string Id { get; set; }
+            public string Id { get; set; }
         }
 
         public class Handler : IRequestHandler<Command>
@@ -26,13 +27,22 @@ namespace Application.UnitRelated
             {
                 var flat = await _context.Flats.FindAsync(request.Id);
 
-                if(flat == null) throw new RestException(HttpStatusCode.NotFound,new {error = "No flat found"});
+                if (flat == null) throw new RestException(HttpStatusCode.NotFound, new { error = "No flat found" });
 
-                 _context.Flats.Remove(flat);
+                try
+                {
+                    _context.Flats.Remove(flat);
 
-                 var result = await _context.SaveChangesAsync() > 0;
+                    var result = await _context.SaveChangesAsync() > 0;
+                    if (result) return Unit.Value;
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
 
-                 if(result) return Unit.Value;
+
+
                 throw new System.NotImplementedException();
             }
         }

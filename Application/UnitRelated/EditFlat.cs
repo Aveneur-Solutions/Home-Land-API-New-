@@ -82,7 +82,6 @@ namespace Application.UnitRelated
 
                 var imageList = new List<IFormFile>();
                 if(request.Images != null) imageList.Add(request.Images);
-
                 var images = FileUpload.UploadImage(imageList, _env, "Flat");
                 var imageListToBeAdded = new List<FlatImage> { };
 
