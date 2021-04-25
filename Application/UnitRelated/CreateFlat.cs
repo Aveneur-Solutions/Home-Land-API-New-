@@ -62,7 +62,10 @@ namespace Application.UnitRelated
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                var flat = new Flat
+                var flat = await _context.Flats.FindAsync(request.Id);
+                if(flat != null) throw new RestException(HttpStatusCode.Conflict,new {error ="A flat with the given Id already exists"});
+
+                 flat = new Flat
                 {
                     Id = request.Id,
                     Size = int.Parse(request.Size),

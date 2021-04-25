@@ -24,12 +24,13 @@ namespace Application.Helper
                             {
                                 Directory.CreateDirectory(environment.WebRootPath + fName);
                             }
-                            using (FileStream filestream = System.IO.File.Create(environment.WebRootPath + fName + file.FileName))
+                            var fileLocationPath = fName + Guid.NewGuid().ToString()+ file.FileName;
+                            using (FileStream filestream = System.IO.File.Create(environment.WebRootPath +fileLocationPath))
                             {
                                 file.CopyTo(filestream);
                                 filestream.Flush();
                                 
-                                fileNames.Add(fName + Guid.NewGuid().ToString()+ file.FileName);
+                                fileNames.Add(fileLocationPath);
                             }
                         }
                         catch (Exception)
