@@ -17,7 +17,7 @@ namespace Application.Helper
                 {
                     if (file.Length > 0)
                     {
-                        var fName = folderName != null ? "\\" + folderName + "\\" : "\\Images\\";
+                        var fName = folderName != null ? "\\" + folderName + "\\" : "\\CommonImages\\";
                         try
                         {
                             if (!Directory.Exists(environment.WebRootPath + fName))
