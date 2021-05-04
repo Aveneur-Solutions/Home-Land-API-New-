@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Adminstrator;
+using Domain.Common;
 using Domain.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -22,6 +23,11 @@ namespace API.Controllers
         {
             // command.File = file;
             return await Mediator.Send(command);
+        }
+        [HttpGet("Images")]
+        public async Task<ActionResult<List<Image>>> GetAllImages()
+        {
+            return await Mediator.Send(new ListImages.Query());
         }
     }
 }
