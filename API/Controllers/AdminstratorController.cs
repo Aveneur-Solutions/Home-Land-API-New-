@@ -15,7 +15,8 @@ namespace API.Controllers
     public class AdminstratorController : BaseController
     {
         [HttpGet("UserList")]
-        public async Task<ActionResult<List<UserDTO>>> AllUsers()
+        [AllowAnonymous]
+        public async Task<ActionResult<List<CustomerDTO>>> AllUsers()
         {
             return await Mediator.Send(new GetAllUsers.Query());
         }

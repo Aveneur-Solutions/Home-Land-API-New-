@@ -42,6 +42,8 @@ namespace Persistence.Initialize
                         LastName = "Rahman Obaidul",
                         UserName = "PervySage",
                         PhoneNumber = "+8801717755244",
+                        NID = "123456789",
+                        Address ="Pulartek,Rajapur,Ingrejidesh",
                         PhoneNumberConfirmed = true
                     },
                      new AppUser{
@@ -50,6 +52,8 @@ namespace Persistence.Initialize
                         LastName = "M.Chowdhury",
                         UserName = "CEO",
                         PhoneNumber = "+8801716590911",
+                        NID = "123456789",
+                        Address ="Pulartek,Rajapur,Ingrejidesh",
                         PhoneNumberConfirmed = true
                     },
                     new AppUser{
@@ -58,6 +62,8 @@ namespace Persistence.Initialize
                         LastName = "Faiaz Kuddus",
                         UserName = "Salman_Muqtadir",
                         PhoneNumber = "+8801625203488",
+                        NID = "123456789",
+                        Address ="Pulartek,Rajapur,Ingrejidesh",
                         PhoneNumberConfirmed = true
                     },
                     new AppUser{
@@ -65,6 +71,8 @@ namespace Persistence.Initialize
                         FirstName = "Ashikur",
                         LastName = "Rahman Kader",
                         UserName = "Pervy_Madara",
+                        NID = "123456789",
+                        Address ="Pulartek,Rajapur,Ingrejidesh",
                         PhoneNumber = "+8801837440069",
                         PhoneNumberConfirmed = true
                     }
@@ -80,10 +88,12 @@ namespace Persistence.Initialize
                     FirstName = "Ragib",
                     LastName = "Ibne King",
                     UserName = "Insaiyan",
+                    NID = "123456789",
+                    Address = "Pulartek,Rajapur,Ingrejidesh",
                     PhoneNumber = "+8801680800602",
                     PhoneNumberConfirmed = true
                 };
-                await userManager.CreateAsync(adminUser, "VeryStrongP@ss0wrd");
+                await userManager.CreateAsync(adminUser, "StrongP@ssw0rd");
                 await userManager.AddToRoleAsync(adminUser, "Super Admin");
 
             }
