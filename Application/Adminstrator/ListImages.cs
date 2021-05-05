@@ -20,9 +20,9 @@ namespace Application.Adminstrator
                 _context = context;
             }
 
-            public Task<List<Image>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<Image>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return _context.Images.ToListAsync();
+                return await _context.Images.ToListAsync();
             }
         }
     }

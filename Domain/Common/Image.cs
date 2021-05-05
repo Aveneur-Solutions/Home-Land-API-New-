@@ -7,6 +7,5 @@ namespace Domain.Common
         public Guid Id { get; set; }
         public string ImageLocation { get; set; }      
         public string Section { get; set; }
-
     }
 }
