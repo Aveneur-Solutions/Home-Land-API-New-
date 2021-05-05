@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Adminstrator;
@@ -19,7 +20,7 @@ namespace API.Controllers
             return await Mediator.Send(new GetAllUsers.Query());
         }
         [HttpPost("Gallery")]
-        public async Task<ActionResult<Unit>> UploadPhotoToGallery([FromForm]ImageUpload.Command command)
+        public async Task<ActionResult<Unit>> UploadPhotoToGallery([FromForm] ImageUpload.Command command)
         {
             // command.File = file;
             return await Mediator.Send(command);
@@ -28,6 +29,16 @@ namespace API.Controllers
         public async Task<ActionResult<List<Image>>> GetAllImages()
         {
             return await Mediator.Send(new ListImages.Query());
+        }
+        [HttpGet("Images/{id}")]
+        public async Task<ActionResult<Image>> GetImage(Guid id)
+        {
+            return await Mediator.Send(new ImageDetails.Query { Id = id });
+        }
+        [HttpDelete("Images/{id}")]
+        public async Task<ActionResult<Unit>> DeleteImage(Guid id)
+        {
+            return await Mediator.Send(new DeleteImage.Command { Id = id });
         }
     }
 }
