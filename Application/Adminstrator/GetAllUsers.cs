@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,11 +17,10 @@ namespace Application.Adminstrator
 {
     public class GetAllUsers
     {
-        public class Query : IRequest<List<UserDTO>>
+        public class Query : IRequest<List<CustomerDTO>>
         {
-            public string PhoneNumber { get; set; }
         }
-        public class Handler : IRequestHandler<Query, List<UserDTO>>
+        public class Handler : IRequestHandler<Query, List<CustomerDTO>>
         {
             private readonly HomelandContext _context;
             private readonly IMapper _mapper;
@@ -33,19 +33,24 @@ namespace Application.Adminstrator
                 _context = context;
             }
 
-            public async Task<List<UserDTO>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<CustomerDTO>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var users = await _context.Users.ToListAsync();
 
                 if (users == null) throw new RestException(HttpStatusCode.NotFound, new { error = "No Users Found" });
 
-                var mappedUsers = _mapper.Map<List<AppUser>, List<UserDTO>>(users);
+                var mappedUsers = _mapper.Map<List<AppUser>, List<CustomerDTO>>(users);
+            
                 var i = 0;
                 while (i < mappedUsers.Count)
                 {
                     mappedUsers[i].Role = await _userManager.IsInRoleAsync(users[i],"User")
                      ? "User" : await _userManager.IsInRoleAsync(users[i],"Admin") 
                      ? "Admin" : "Super Admin";
+                     var booking  = await _context.Bookings.Where( x => x.UserId == users[i].Id).ToListAsync();
+                     mappedUsers[i].NoOfFlatsBooked = booking.Count;
+                     var alloted  = await _context.AllotMents.Where( x => x.UserId == users[i].Id).ToListAsync();
+                     mappedUsers[i].NoOfFlatsAlloted = alloted.Count;
                      i++;
                  }
                 return mappedUsers;
