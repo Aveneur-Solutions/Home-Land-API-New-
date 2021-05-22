@@ -62,7 +62,7 @@ namespace API
          {
              opt.AddPolicy("CorsPolicy", policy =>
              {
-                 policy.WithOrigins("http://localhost:3000", "http://localhost:4000", "https://betahomeland.aveneur.com").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                 policy.WithOrigins("http://localhost:3000", "http://localhost:4000", "https://betahomeland.aveneur.com", "https://adminhomeland.aveneur.com").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
              });
          });
             services.AddSwaggerGen(swagger =>
