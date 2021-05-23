@@ -26,6 +26,7 @@ namespace API.Controllers
             return await Mediator.Send(command);
         }
         [HttpGet("Images")]
+        [AllowAnonymous]
         public async Task<ActionResult<List<Image>>> GetAllImages()
         {
             return await Mediator.Send(new ListImages.Query());
