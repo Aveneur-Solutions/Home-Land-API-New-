@@ -21,8 +21,7 @@ namespace Domain.UnitBooking
         public int DownPaymentDays { get; set; }
         public double NetArea { get; set; }
         public double CommonArea { get; set; } 
-
         public ICollection<FlatImage> Images { get; set; }
-
     }
+    
 }

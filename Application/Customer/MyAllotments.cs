@@ -16,10 +16,10 @@ namespace Application.Customer
 {
     public class MyAllotments
     {
-        public class Query : IRequest<List<AllotmentDTO>>
+        public class Query : IRequest<List<FlatDTO>>
         {
         }
-        public class Handler : IRequestHandler<Query, List<AllotmentDTO>>
+        public class Handler : IRequestHandler<Query, List<FlatDTO>>
         {
             private readonly HomelandContext _context;
             private readonly IMapper _mapper;
@@ -32,7 +32,7 @@ namespace Application.Customer
                 _context = context;
             }
 
-            public async Task<List<AllotmentDTO>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<FlatDTO>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var role = _userAccessor.GetUserRole();
                 if (role == "User")
@@ -44,8 +44,10 @@ namespace Application.Customer
                     .Include(x => x.User)
                     .Where(x => x.User.PhoneNumber == user.PhoneNumber)
                     .ToListAsync();
+
+                     var flats = from b in allotments select b.Flat;
                     //  if (allotments.Capacity == 0) throw new RestException(HttpStatusCode.NoContent, new { error = "No Allotments available right now" });
-                    var mappedAllotments = _mapper.Map<List<AllotMent>, List<AllotmentDTO>>(allotments);
+                    var mappedAllotments = _mapper.Map<List<Flat>, List<FlatDTO>>(flats.ToList());
                     return mappedAllotments;
                 }
                 else throw new RestException(HttpStatusCode.Forbidden, new { error = "Power er misuse kora uchit na . ei Api shudhu Customer er" });

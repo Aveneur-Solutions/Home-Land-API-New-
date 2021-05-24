@@ -11,12 +11,12 @@ namespace API.Controllers
     public class CustomerController : BaseController
     {
         [HttpGet("myAllotments")]
-        public async Task<ActionResult<List<AllotmentDTO>>> MyAllotments()
+        public async Task<ActionResult<List<FlatDTO>>> MyAllotments()
         {
             return await Mediator.Send(new MyAllotments.Query { });
         }
         [HttpGet("myBookings")]
-        public async Task<ActionResult<List<BookingDTO>>> MyBookings()
+        public async Task<ActionResult<List<FlatDTO>>> MyBookings()
         {
             return await Mediator.Send(new MyBookings.Query { });
         }

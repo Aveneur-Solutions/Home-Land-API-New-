@@ -37,14 +37,16 @@ namespace Application.UnitRelated
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
 
+                var flat = await _context.Flats.FindAsync(request.flatId);
+                if (flat == null) throw new RestException(HttpStatusCode.NotFound, new { error = "No flat found with the given ID" });
                 var booking = await _context.Bookings.FirstOrDefaultAsync(x => x.FlatId == request.flatId);
                 if (booking == null) throw new RestException(HttpStatusCode.NotFound, new { error = "This flat is not booked ." });
 
-                
-                // will optimize this code later 
-                var allotment = await _context.AllotMents.FirstOrDefaultAsync(x => x.FlatId == request.flatId) ;
 
-                if(allotment != null) throw new RestException(HttpStatusCode.Conflict,new {error = "This flat is already alloted"});
+                // will optimize this code later 
+                var allotment = await _context.AllotMents.FirstOrDefaultAsync(x => x.FlatId == request.flatId);
+
+                if (allotment != null) throw new RestException(HttpStatusCode.Conflict, new { error = "This flat is already alloted" });
 
                 var newAllotment = new AllotMent
                 {
@@ -52,7 +54,8 @@ namespace Application.UnitRelated
                     UserId = booking.UserId,
                     DateAlloted = DateTime.Now
                 };
-
+                 flat.IsSold = true;
+                 flat.IsBooked = false;
                 await _context.AllotMents.AddAsync(newAllotment);
 
                 var result = await _context.SaveChangesAsync() > 0;
