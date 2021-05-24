@@ -61,6 +61,8 @@ namespace Application.UserAuth
                     {
                         Token = _jwtGenerator.CreateToken(user, roleName),
                         Fullname = user.FirstName + " " + user.LastName,
+                        Address = user.Address,
+                        NID = user.NID,
                         PhoneNumber = user.PhoneNumber,
                         Role = roleName
                     };
