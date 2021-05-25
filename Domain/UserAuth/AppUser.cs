@@ -12,6 +12,7 @@ namespace Domain.UserAuth
         public string OTP { get; set; }
         public string NID { get; set; }
         public string Address { get; set; }
+        public string ProfileImage { get; set; }
 
        
     }

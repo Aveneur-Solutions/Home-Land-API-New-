@@ -9,5 +9,6 @@ namespace Domain.DTOs
         public int NoOfFlatsBooked { get; set; }
         public int NoOfFlatsAlloted { get; set; }
         public string Role { get; set; }
+        public string ProfileImage { get; set; }
      }
 }

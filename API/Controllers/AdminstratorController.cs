@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Adminstrator;
+using Application.UnitRelated;
 using Domain.Common;
 using Domain.DTOs;
 using MediatR;
@@ -40,6 +41,12 @@ namespace API.Controllers
         public async Task<ActionResult<Unit>> DeleteImage(Guid id)
         {
             return await Mediator.Send(new DeleteImage.Command { Id = id });
+        }
+        [HttpDelete("Unbook/{id}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<Unit>> UnbookFlat(string id)
+        {
+            return await Mediator.Send(new UnbookFlat.Command{FlatId = id});
         }
     }
 }

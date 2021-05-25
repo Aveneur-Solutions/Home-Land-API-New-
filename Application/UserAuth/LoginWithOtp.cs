@@ -72,7 +72,8 @@ namespace Application.UserAuth
                         Address = user.Address,
                         NID = user.NID,
                         Token = _jwtGenerator.CreateToken(user, roleName),
-                        Role = roleName
+                        Role = roleName,
+                        ProfileImage = user.ProfileImage
                     };
                 }
                 else throw new RestException(HttpStatusCode.Unauthorized, new { error = "Faizlami Koren mia" });

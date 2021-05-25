@@ -49,7 +49,8 @@ namespace Application.UserAuth
                     Fullname = user.FirstName + " " + user.LastName,
                     Address = user.Address,
                     NID = user.NID,
-                    Token = _jwtGenerator.CreateToken(user, roleName)
+                    Token = _jwtGenerator.CreateToken(user, roleName),
+                    ProfileImage = user.ProfileImage
                 };
             }
         }
