@@ -17,7 +17,7 @@ namespace Application.UnitRelated
     {
         public class Command : IRequest
         {
-            public List<string> FlatIds { get; set; }
+            public string[] FlatIds { get; set; }
         }
         public class CommandValidator : AbstractValidator<Command>
         {
