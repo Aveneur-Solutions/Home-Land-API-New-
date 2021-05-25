@@ -30,7 +30,8 @@ namespace Application.UserAuth
 
             public async Task<CustomerDTO> Handle(Query request, CancellationToken cancellationToken)
             {
-                var user = await _context.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
+                string phoneNumber = "+88"+request.PhoneNumber;
+                var user = await _context.Users.FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber);
 
                 if (user == null) throw new RestException(HttpStatusCode.NotFound, new { error = "User Doesn't exist" });
 
