@@ -40,6 +40,12 @@ namespace API.Controllers
         {
             return await Mediator.Send(new CurrentUser.Query());
         }
+        
+        [HttpPost("changePassword")]
+        public async Task<Unit> ChangePassword(ChangePassword.Command command)
+        {
+            return await Mediator.Send(command);
+        }
 
         [HttpGet("{phonenumber}")]
         [Authorize(Roles = "Super Admin")]
