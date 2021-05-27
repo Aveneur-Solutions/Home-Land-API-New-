@@ -48,7 +48,6 @@ namespace API.Controllers
         }
 
         [HttpGet("{phonenumber}")]
-        [Authorize(Roles = "Super Admin")]
         public async Task<ActionResult<CustomerDTO>> GetUser(string phonenumber)
         {
             return await Mediator.Send(new GetUser.Query { PhoneNumber = phonenumber });
