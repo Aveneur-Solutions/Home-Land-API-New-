@@ -59,6 +59,11 @@ namespace Application.UnitRelated
                 if (reciever == null) throw new RestException(HttpStatusCode.NotFound, new { error = "No account found with this number" });
                 if (sender.PhoneNumber == reciever.PhoneNumber) throw new RestException(HttpStatusCode.BadRequest, new { error = "You can't transfer unit to your own account" });
                 if(await _userManager.IsInRoleAsync(reciever,"Super Admin")) throw new RestException(HttpStatusCode.BadRequest, new { error = "You can't transfer unit to this account" });
+                
+               var alreadyTransferred = checkIfAlreadyTransferred(request.FlatIds);
+               var alreadyTransferredFlatIds = alreadyTransferred.Result;
+               if(!String.IsNullOrEmpty(alreadyTransferredFlatIds) ) throw new RestException(HttpStatusCode.MethodNotAllowed,new {error = "You can't transfer the following units"+alreadyTransferredFlatIds});
+
                 var transferList = new List<Transfer>();
                 var bookingsToBeRemoved = new List<Booking>();
                 var bookingsToBeAdded = new List<Booking>();
@@ -102,6 +107,21 @@ namespace Application.UnitRelated
                 if (result) return Unit.Value;
 
                 throw new RestException(HttpStatusCode.Forbidden, new { error = "Couldn't Complete the transfer" });
+            }
+
+            private async Task<string> checkIfAlreadyTransferred(List<string> flatIds)
+            {
+                Transfer flat=null;
+                var transferredFlats = "";
+                foreach(var flatId in flatIds)
+                {
+                  flat = await _context.TransferredFlats.FirstOrDefaultAsync(x => x.FlatId == flatId);
+                  if(flat != null) {
+                      transferredFlats+=","+flatId;
+                      }
+                }
+
+                return transferredFlats;
             }
         }
     }
