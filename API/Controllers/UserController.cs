@@ -52,5 +52,16 @@ namespace API.Controllers
         {
             return await Mediator.Send(new GetUser.Query { PhoneNumber = phonenumber });
         }
+        [HttpPost("ResendOtp")]
+        [AllowAnonymous]
+        public async Task<ActionResult<Unit>> ResendOTP(ResendOTP.Command command)
+        {
+           return await Mediator.Send(command);
+        }
+        [HttpPost("ResetPassword")]
+        public async Task<ActionResult<Unit>> ResetPassword(ResetPassword.Command command)
+        {
+           return await Mediator.Send(command);
+        }
     }
 }

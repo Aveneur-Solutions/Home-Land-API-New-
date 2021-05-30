@@ -15,6 +15,7 @@ namespace Domain.DTOs
         public int NoOfBalconies { get; set; }
         public double BookingPrice { get; set; }
         public bool IsBooked { get; set; }
+        public bool IsAlreadyTransferred { get; set; }
         public int DownPaymentDays { get; set; }
         public double NetArea { get; set; }
         public double CommonArea { get; set; } 

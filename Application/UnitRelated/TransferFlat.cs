@@ -88,6 +88,7 @@ namespace Application.UnitRelated
                         User = reciever,
                         DateBooked = transferredFlat.TransferDate
                     };
+                    flat.IsAlreadyTransferred = true;
                     bookingsToBeRemoved.Add(bookingToBeDeleted);
                     bookingsToBeAdded.Add(bookingToBeAdded);
                     transferList.Add(transferredFlat);
@@ -97,7 +98,7 @@ namespace Application.UnitRelated
                  && bookingsToBeRemoved.Count == 0
                  && transferList.Count == 0)
                     throw new RestException(HttpStatusCode.BadRequest, new { error = "Can't transfer because the flats doesn't belong to you" });
-
+                
                 _context.Bookings.RemoveRange(bookingsToBeRemoved);
                 await _context.Bookings.AddRangeAsync(bookingsToBeAdded);
                 await _context.TransferredFlats.AddRangeAsync(transferList);
@@ -108,7 +109,6 @@ namespace Application.UnitRelated
 
                 throw new RestException(HttpStatusCode.Forbidden, new { error = "Couldn't Complete the transfer" });
             }
-
             private async Task<string> checkIfAlreadyTransferred(List<string> flatIds)
             {
                 Transfer flat=null;
@@ -120,7 +120,6 @@ namespace Application.UnitRelated
                       transferredFlats+=","+flatId;
                       }
                 }
-
                 return transferredFlats;
             }
         }
