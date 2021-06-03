@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.SSLCommerz;
 using Application.UnitRelated;
 using Domain.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Domain.Common.SSLCommerz;
 
 namespace API.Controllers
 {
@@ -66,7 +68,6 @@ namespace API.Controllers
         [Authorize(Roles = "Super Admin")]
         public async Task<ActionResult<Unit>> EditFlat(string id, [FromForm]EditFlat.Command command)
         {
-            // command.Id = id;
             return await Mediator.Send(command);
         }
         [HttpPut("setFeatured/{id}")]
@@ -103,6 +104,13 @@ namespace API.Controllers
          [HttpPost("createAllotment")]
         [Authorize(Roles = "Super Admin")]
         public async Task<ActionResult<Unit>> CreateAllotment(CreateAllotment.Command command)
+        {
+            return await Mediator.Send(command);
+        }
+
+        [HttpPost("Payment")]
+        [Authorize(Roles = "User")]
+        public async Task<ActionResult<PaymentResponseDTO>> InitiatePayment(InitiatePayment.Command command)
         {
             return await Mediator.Send(command);
         }
