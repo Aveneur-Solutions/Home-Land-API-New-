@@ -10,7 +10,6 @@ using static Domain.Common.SSLCommerz;
 
 namespace API.Controllers
 {
-
     public class FlatController : BaseController
     {
         [HttpGet]
