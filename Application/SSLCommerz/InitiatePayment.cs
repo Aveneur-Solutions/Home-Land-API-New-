@@ -57,11 +57,12 @@ namespace Application.SSLCommerz
                 }
                 var resp = System.Text.Encoding.UTF8.GetString(response);
                 var jsonResp = JsonSerializer.Deserialize<SSLCommerzInitResponse>(resp);
-
+                // return jsonResp;
                 return new PaymentResponseDTO
                 {
                     Status = jsonResp.status,
-                    GatewayPageURL = jsonResp.GatewayPageURL
+                    GatewayPageURL = jsonResp.GatewayPageURL,
+                    FailedReason = jsonResp.failedreason
                 };
 
             }
@@ -73,6 +74,7 @@ namespace Application.SSLCommerz
                 NameValueCollection PostData = new NameValueCollection();
                 PostData.Add("store_id", "homel60b93200bec30");
                 PostData.Add("store_passwd", "homel60b93200bec30@ssl");
+                PostData.Add("total_amount",total);
                 PostData.Add("currency", "BDT");
                 PostData.Add("tran_id", transactionId);
                 PostData.Add("product_category", "Real Estate");
@@ -81,10 +83,10 @@ namespace Application.SSLCommerz
                 PostData.Add("cancel_url", "https://betahomeland.aveneur.com/#/my-bookings"); // "Cancel.aspx" page needs to be created
                 PostData.Add("version", "3.00");
                 PostData.Add("cus_name", user.FirstName+" "+user.LastName);
-                PostData.Add("cus_email", "abc.xyz@mail.co");
-                PostData.Add("cus_add1", user.Address);
-                PostData.Add("cus_city", "City Nam");
-                PostData.Add("cus_postcode", "Post Cod");
+                PostData.Add("cus_email", "ragibibnehossain@mail.com");
+                PostData.Add("cus_add1", user.Address ?? "Not declared");
+                PostData.Add("cus_city", "City Name");
+                PostData.Add("cus_postcode", "Post Code");
                 PostData.Add("cus_country", "Bangladesh");
                 PostData.Add("cus_phone", user.PhoneNumber);
                 PostData.Add("shipping_method", "NO");
