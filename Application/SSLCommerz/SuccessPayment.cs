@@ -4,12 +4,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using Domain.Errors;
 using MediatR;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.SSLCommerz
 {
-    public class IPNListener
+    public class SuccessPayment
     {
         public class Command : IRequest
         {
@@ -42,10 +44,12 @@ namespace Application.SSLCommerz
 
         public class Handler : IRequestHandler<Command>
         {
+            private readonly IHttpContextAccessor _httpContextAccessor;
 
             private readonly HomelandContext _context;
-            public Handler(HomelandContext context)
+            public Handler(HomelandContext context, IHttpContextAccessor httpContextAccessor)
             {
+                _httpContextAccessor = httpContextAccessor;
                 _context = context;
             }
 
@@ -54,18 +58,20 @@ namespace Application.SSLCommerz
 
                 if (request.status == "VALID")
                 {
-                    var order = await _context.Orders.FirstOrDefaultAsync(x => x.TransactionId == request.tran_id);
-
+                   var order = await _context.Orders.FindAsync(request.value_a);
                     if (order != null)
                     {
                         order.PaymentConfirmed = true;
                     }
                     var result = await _context.SaveChangesAsync() > 0;
-                    if(result) return Unit.Value;
+                    if (result)
+                    {
+                        return Unit.Value;
+                    }
                 }
 
-
-                throw new RestException(HttpStatusCode.Unauthorized, new { error = "Failed Transaction" });
+                return Unit.Value;
+              
             }
         }
     }

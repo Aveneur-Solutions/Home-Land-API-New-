@@ -24,6 +24,7 @@ namespace Application.SSLCommerz
             public string Amount { get; set; }
             public string NumberOfItems { get; set; }
             public string TransactionId { get; set; }
+            public string OrderId { get; set; }
         }
         public class CommandValidator : AbstractValidator<Command>
         {
@@ -50,7 +51,7 @@ namespace Application.SSLCommerz
                 var user = await _context.Users
                     .FirstOrDefaultAsync(x => x.PhoneNumber == _userAccessor.GetUserPhoneNo());
   
-                var postData = InitializeParams(user,request.Amount,request.NumberOfItems,request.TransactionId);
+                var postData = InitializeParams(user,request);
                 byte[] response = null;
                 using (WebClient client = new WebClient())
                 {
@@ -68,17 +69,17 @@ namespace Application.SSLCommerz
 
             }
 
-            private NameValueCollection InitializeParams(AppUser user,string total,string numberOfItems,string transactionId)
+            private NameValueCollection InitializeParams(AppUser user,Command request)
             {
 
                 NameValueCollection PostData = new NameValueCollection();
                 PostData.Add("store_id", "homel60b93200bec30");
                 PostData.Add("store_passwd", "homel60b93200bec30@ssl");
-                PostData.Add("total_amount",total);
+                PostData.Add("total_amount",request.Amount);
                 PostData.Add("currency", "BDT");
-                PostData.Add("tran_id",transactionId);
+                PostData.Add("tran_id",request.TransactionId);
                 PostData.Add("product_category", "Real Estate");
-                PostData.Add("success_url", "http://betahomeland.aveneur.com//#/cart");
+                PostData.Add("success_url", "http://localhost:5000/api/Payment/success");
                 PostData.Add("fail_url", "http://betahomeland.aveneur.com//#/failedPayment"); // "Fail.aspx" page needs to be created
                 PostData.Add("cancel_url", "http://betahomeland.aveneur.com//#/cart"); // "Cancel.aspx" page needs to be created
                 PostData.Add("version", "3.00");
@@ -90,11 +91,11 @@ namespace Application.SSLCommerz
                 PostData.Add("cus_country", "Bangladesh");
                 PostData.Add("cus_phone", user.PhoneNumber);
                 PostData.Add("shipping_method", "NO");
-                PostData.Add("value_a", "ref00");
+                PostData.Add("value_a",request.OrderId);
                 PostData.Add("value_b", "ref00");
                 PostData.Add("value_c", "ref00");
                 PostData.Add("value_d", "ref00");
-                PostData.Add("num_of_item", numberOfItems);
+                PostData.Add("num_of_item", request.NumberOfItems);
                 PostData.Add("product_name", "Unit");
                 PostData.Add("product_profile", "general");
                 PostData.Add("product_category", "Real Estate");

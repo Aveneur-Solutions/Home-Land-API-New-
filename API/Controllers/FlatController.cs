@@ -86,13 +86,11 @@ namespace API.Controllers
             return await Mediator.Send(new DeleteFlat.Command { Id = id });
         }
         [HttpPost("placeOrder")]
-
         [Authorize(Roles = "User")]
         public async Task<ActionResult<OrderConfirmedDto>> BookFlat(PlaceOrder.Command command)
         {
             return await Mediator.Send(command);
         }
-
         [HttpPost("bookNow")]
 
         [Authorize(Roles = "User")]
@@ -116,12 +114,7 @@ namespace API.Controllers
             return await Mediator.Send(command);
         }
 
-        [HttpPost("Payment")]
-        [Authorize(Roles = "User")]
-        public async Task<ActionResult<PaymentResponseDTO>> InitiatePayment(InitiatePayment.Command command)
-        {
-            return await Mediator.Send(command);
-        }
+      
 
     }
 }

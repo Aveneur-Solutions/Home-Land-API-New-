@@ -49,27 +49,27 @@ namespace Application.UnitRelated
                     Id = request.OrderId,
                     OrderDate = DateTime.Now,
                     User = user,
-                    TrasnsactionId = transactionId
+                    TransactionId = transactionId
                 };
                 string listOfOrderedFlats = "";
 
-                foreach (var flatId in request.flatIds)
-                {
-                    var flat = await _context.Flats.FindAsync(flatId);
+                // foreach (var flatId in request.flatIds)
+                // {
+                //     var flat = await _context.Flats.FindAsync(flatId);
 
-                    if (flat == null) continue;
+                //     if (flat == null) continue;
 
-                    if (string.IsNullOrEmpty(flat.OrderId))
-                    {
-                        flat.Order = order;
-                    }
-                    else listOfOrderedFlats = listOfOrderedFlats + flatId + ",";
-                }
+                //     if (string.IsNullOrEmpty(flat.OrderId))
+                //     {
+                //         flat.Order = order;
+                //     }
+                //     else listOfOrderedFlats = listOfOrderedFlats + flatId + ",";
+                // }
 
-                if (listOfOrderedFlats.Length > 1) throw new RestException(HttpStatusCode.Conflict, new { error = "Couldn't place the order because " + listOfOrderedFlats + " someone already placed order for them" });
+                // if (listOfOrderedFlats.Length > 1) throw new RestException(HttpStatusCode.Conflict, new { error = "Couldn't place the order because " + listOfOrderedFlats + " someone already placed order for them" });
 
                 await _context.Orders.AddAsync(order);
-
+                await _context.Orders.ToListAsync();
                 var result = await _context.SaveChangesAsync() > 0;
 
                 if(result) return new OrderConfirmedDto{

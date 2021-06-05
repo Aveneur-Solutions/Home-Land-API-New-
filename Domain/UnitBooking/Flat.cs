@@ -22,8 +22,6 @@ namespace Domain.UnitBooking
         public double NetArea { get; set; }
         public double CommonArea { get; set; } 
         public bool IsAlreadyTransferred { get; set; }
-        public Order Order { get; set; }
-        public string OrderId { get; set; }
         public ICollection<FlatImage> Images { get; set; }
     }
     
