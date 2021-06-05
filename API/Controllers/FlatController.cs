@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Application.SSLCommerz;
 using Application.UnitRelated;
 using Domain.DTOs;
+using Domain.UnitBooking;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -84,6 +85,14 @@ namespace API.Controllers
 
             return await Mediator.Send(new DeleteFlat.Command { Id = id });
         }
+        [HttpPost("placeOrder")]
+
+        [Authorize(Roles = "User")]
+        public async Task<ActionResult<OrderConfirmedDto>> BookFlat(PlaceOrder.Command command)
+        {
+            return await Mediator.Send(command);
+        }
+
         [HttpPost("bookNow")]
 
         [Authorize(Roles = "User")]
