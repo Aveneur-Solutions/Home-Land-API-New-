@@ -19,6 +19,7 @@ namespace Persistence
         public DbSet<Log> ActivityLogs { get; set; }
         public DbSet<AllotMent> AllotMents { get; set; }
         public DbSet<Image> Images { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
            protected override void OnModelCreating(ModelBuilder builder)
         {

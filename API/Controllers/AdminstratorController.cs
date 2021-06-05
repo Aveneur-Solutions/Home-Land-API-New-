@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Adminstrator;
+using Application.SSLCommerz;
 using Application.UnitRelated;
 using Domain.Common;
 using Domain.DTOs;
@@ -44,12 +45,18 @@ namespace API.Controllers
         [HttpDelete("Unbook/{id}")]
         public async Task<ActionResult<Unit>> UnbookFlat(string id)
         {
-            return await Mediator.Send(new UnbookFlat.Command{FlatId = id});
+            return await Mediator.Send(new UnbookFlat.Command { FlatId = id });
         }
         [HttpGet("stats")]
         public async Task<ActionResult<StatDTO>> GetStats()
         {
             return await Mediator.Send(new Stat.Query());
+        }
+        [HttpPost("ipn")]
+        [AllowAnonymous]
+        public async Task<ActionResult<Unit>> IpnListener(IPNListener.Command command)
+        {
+            return await Mediator.Send(command);
         }
     }
 }
