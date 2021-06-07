@@ -20,8 +20,8 @@ namespace API.Controllers
         public async Task<ActionResult> SuccessPayment([FromForm]SuccessPayment.Command command)
         {
           await Mediator.Send(command);
-          if(command.status == "VALID")  return Redirect("https://betahomeland.aveneur.com/#/cart");
-          else return Redirect("https://betahomeland.aveneur.com/#/");
+          if(command.status == "VALID")  return Redirect(command.value_c);
+          else return Redirect(command.value_d);
         }
         [HttpPost("ipn")]
         [AllowAnonymous]

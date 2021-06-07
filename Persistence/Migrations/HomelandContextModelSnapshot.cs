@@ -145,9 +145,6 @@ namespace Persistence.Migrations
                     b.Property<int>("NoOfBedrooms")
                         .HasColumnType("int");
 
-                    b.Property<string>("OrderId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
@@ -155,8 +152,6 @@ namespace Persistence.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
 
                     b.ToTable("Flats");
                 });
@@ -185,6 +180,9 @@ namespace Persistence.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,4)");
+
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
@@ -197,9 +195,6 @@ namespace Persistence.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<decimal>("amount")
-                        .HasColumnType("decimal(18,2)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
@@ -209,8 +204,9 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.UnitBooking.OrderDetails", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FlatId")
                         .HasColumnType("nvarchar(450)");
@@ -495,13 +491,6 @@ namespace Persistence.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("Domain.UnitBooking.Flat", b =>
-                {
-                    b.HasOne("Domain.UnitBooking.Order", null)
-                        .WithMany("Flats")
-                        .HasForeignKey("OrderId");
-                });
-
             modelBuilder.Entity("Domain.UnitBooking.FlatImage", b =>
                 {
                     b.HasOne("Domain.UnitBooking.Flat", "Flat")
@@ -524,7 +513,7 @@ namespace Persistence.Migrations
                         .HasForeignKey("FlatId");
 
                     b.HasOne("Domain.UnitBooking.Order", "Order")
-                        .WithMany()
+                        .WithMany("OrderDetails")
                         .HasForeignKey("OrderId");
                 });
 

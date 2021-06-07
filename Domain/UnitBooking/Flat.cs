@@ -23,6 +23,7 @@ namespace Domain.UnitBooking
         public double CommonArea { get; set; } 
         public bool IsAlreadyTransferred { get; set; }
         public ICollection<FlatImage> Images { get; set; }
+        public ICollection<OrderDetails> OrderDetails { get; set; }
     }
     
 }

@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Domain.Errors;
+using Domain.UnitBooking;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -58,20 +60,49 @@ namespace Application.SSLCommerz
 
                 if (request.status == "VALID")
                 {
-                   var order = await _context.Orders.FindAsync(request.value_a);
+                    var order = await _context.Orders.FindAsync(request.value_a);
                     if (order != null)
                     {
                         order.PaymentConfirmed = true;
+                        var bookings = await BookFlat(request);
+                        await _context.Bookings.AddRangeAsync(bookings);
+                        var result = await _context.SaveChangesAsync() > 0;
+                        if (result)
+                        {
+                            return Unit.Value;
+                        }
                     }
-                    var result = await _context.SaveChangesAsync() > 0;
-                    if (result)
-                    {
-                        return Unit.Value;
-                    }
+
                 }
 
                 return Unit.Value;
-              
+
+            }
+
+            private async Task<List<Booking>> BookFlat(Command request)
+            {
+                var user = await _context.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.value_b);
+                if (user == null) throw new RestException(HttpStatusCode.NotFound, new { error = "You don't have any account here with this number . sorry" });
+                var order = await _context.Orders.
+                Include(x => x.OrderDetails).
+                  ThenInclude(x => x.Flat).
+                FirstOrDefaultAsync(x => x.Id == request.value_a);
+                var bookings = new List<Booking>();
+                foreach (var orderDetails in order.OrderDetails)
+                {
+                    var flat = await _context.Flats.FindAsync(orderDetails.FlatId);
+
+                    if (flat == null) continue;
+                    flat.IsBooked = true;
+                    Booking booking = new Booking
+                    {
+                        User = user,
+                        Flat = flat,
+                        DateBooked = DateTime.Now
+                    };
+                    bookings.Add(booking);
+                }
+                return bookings;
             }
         }
     }

@@ -51,7 +51,7 @@ namespace Application.UserAuth
             {
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
                 if (user == null)
-                    throw new RestException(HttpStatusCode.Unauthorized, new { error = "bhung bhang credentials dile dhukte parben na" });
+                    throw new RestException(HttpStatusCode.Unauthorized, new { error = "Incorrect phone number or password" });
                 var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
 
@@ -66,7 +66,7 @@ namespace Application.UserAuth
                     await _userManager.UpdateAsync(user);
                      return Unit.Value;
                 }
-                throw new RestException(HttpStatusCode.Unauthorized, new { error = "bhung bhang credentials dile dhukte parben na" });
+                throw new RestException(HttpStatusCode.Unauthorized, new { error = "Couldn't log in" });
             }
         }
     }

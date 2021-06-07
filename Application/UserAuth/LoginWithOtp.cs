@@ -51,7 +51,7 @@ namespace Application.UserAuth
             {
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
                 if (user == null)
-                    throw new RestException(HttpStatusCode.Unauthorized, new { error = "bhung bhang credentials dile dhukte parben na" });
+                    throw new RestException(HttpStatusCode.Unauthorized, new { error = "No user exists with this number" });
 
 
                 if (!String.IsNullOrEmpty(user.OTP) && user.OTP == request.Otp)
@@ -76,7 +76,7 @@ namespace Application.UserAuth
                         ProfileImage = user.ProfileImage
                     };
                 }
-                else throw new RestException(HttpStatusCode.Unauthorized, new { error = "Faizlami Koren mia" });
+                else throw new RestException(HttpStatusCode.Unauthorized, new { error = "Wrong OTP" });
 
                 // throw new RestException(HttpStatusCode.Unauthorized, new { error = "bhung bhang credentials dile dhukte parben na" });
             }
