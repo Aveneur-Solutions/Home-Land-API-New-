@@ -52,11 +52,6 @@ namespace API.Controllers
         {
             return await Mediator.Send(new Stat.Query());
         }
-        [HttpPost("ipn")]
-        [AllowAnonymous]
-        public async Task<ActionResult<Unit>> IpnListener(IPNListener.Command command)
-        {
-            return await Mediator.Send(command);
-        }
+        
     }
 }

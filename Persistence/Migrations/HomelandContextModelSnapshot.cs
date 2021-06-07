@@ -145,9 +145,6 @@ namespace Persistence.Migrations
                     b.Property<int>("NoOfBedrooms")
                         .HasColumnType("int");
 
-                    b.Property<string>("OrderId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
@@ -155,8 +152,6 @@ namespace Persistence.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
 
                     b.ToTable("Flats");
                 });
@@ -185,13 +180,16 @@ namespace Persistence.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,4)");
+
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("PaymentConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("TrasnsactionId")
+                    b.Property<string>("TransactionId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
@@ -202,6 +200,27 @@ namespace Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Domain.UnitBooking.OrderDetails", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FlatId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("OrderId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FlatId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("Domain.UnitBooking.Transfer", b =>
@@ -472,13 +491,6 @@ namespace Persistence.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("Domain.UnitBooking.Flat", b =>
-                {
-                    b.HasOne("Domain.UnitBooking.Order", "Order")
-                        .WithMany("Flats")
-                        .HasForeignKey("OrderId");
-                });
-
             modelBuilder.Entity("Domain.UnitBooking.FlatImage", b =>
                 {
                     b.HasOne("Domain.UnitBooking.Flat", "Flat")
@@ -492,6 +504,17 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.UserAuth.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Domain.UnitBooking.OrderDetails", b =>
+                {
+                    b.HasOne("Domain.UnitBooking.Flat", "Flat")
+                        .WithMany()
+                        .HasForeignKey("FlatId");
+
+                    b.HasOne("Domain.UnitBooking.Order", "Order")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderId");
                 });
 
             modelBuilder.Entity("Domain.UnitBooking.Transfer", b =>

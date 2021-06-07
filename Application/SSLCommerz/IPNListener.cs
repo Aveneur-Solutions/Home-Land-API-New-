@@ -54,7 +54,7 @@ namespace Application.SSLCommerz
 
                 if (request.status == "VALID")
                 {
-                    var order = await _context.Orders.FirstOrDefaultAsync(x => x.TrasnsactionId == request.tran_id);
+                    var order = await _context.Orders.FirstOrDefaultAsync(x => x.TransactionId == request.tran_id);
 
                     if (order != null)
                     {

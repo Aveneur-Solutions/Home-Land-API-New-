@@ -55,7 +55,7 @@ namespace Application.UserAuth
                     await _userManager.UpdateAsync(user);
                     return Unit.Value;
                 }
-                throw new RestException(HttpStatusCode.Unauthorized, new { error = "bhung bhang credentials dile dhukte parben na" });
+                throw new RestException(HttpStatusCode.Unauthorized, new { error = "Couldn't change the password" });
             }
         }
     }

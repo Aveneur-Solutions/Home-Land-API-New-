@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Persistence.Migrations
 {
-    public partial class UpdatedNewMigration : Migration
+    public partial class NewLatestMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -58,7 +58,8 @@ namespace Persistence.Migrations
                     Birthdate = table.Column<DateTime>(nullable: false),
                     OTP = table.Column<string>(nullable: true),
                     NID = table.Column<string>(nullable: true),
-                    Address = table.Column<string>(nullable: true)
+                    Address = table.Column<string>(nullable: true),
+                    ProfileImage = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -81,11 +82,27 @@ namespace Persistence.Migrations
                     BookingPrice = table.Column<double>(nullable: false),
                     IsBooked = table.Column<bool>(nullable: false),
                     IsSold = table.Column<bool>(nullable: false),
-                    DownPaymentDays = table.Column<int>(nullable: false)
+                    DownPaymentDays = table.Column<int>(nullable: false),
+                    NetArea = table.Column<double>(nullable: false),
+                    CommonArea = table.Column<double>(nullable: false),
+                    IsAlreadyTransferred = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Flats", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Images",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    ImageLocation = table.Column<string>(nullable: true),
+                    Section = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -195,6 +212,54 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    OrderDate = table.Column<DateTime>(nullable: false),
+                    TransactionId = table.Column<string>(nullable: true),
+                    Amount = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    PaymentConfirmed = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AllotMents",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    DateAlloted = table.Column<DateTime>(nullable: false),
+                    FlatId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AllotMents", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AllotMents_Flats_FlatId",
+                        column: x => x.FlatId,
+                        principalTable: "Flats",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AllotMents_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Bookings",
                 columns: table => new
                 {
@@ -258,20 +323,54 @@ namespace Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    FlatId = table.Column<Guid>(nullable: false),
-                    FlatId1 = table.Column<string>(nullable: true),
+                    FlatId = table.Column<string>(nullable: true),
                     ImageLocation = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UnitImages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UnitImages_Flats_FlatId1",
-                        column: x => x.FlatId1,
+                        name: "FK_UnitImages_Flats_FlatId",
+                        column: x => x.FlatId,
+                        principalTable: "Flats",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderDetails",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    OrderId = table.Column<string>(nullable: true),
+                    FlatId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Flats_FlatId",
+                        column: x => x.FlatId,
                         principalTable: "Flats",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AllotMents_FlatId",
+                table: "AllotMents",
+                column: "FlatId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AllotMents_UserId",
+                table: "AllotMents",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -323,6 +422,21 @@ namespace Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_FlatId",
+                table: "OrderDetails",
+                column: "FlatId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_OrderId",
+                table: "OrderDetails",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_UserId",
+                table: "Orders",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TransferredFlats_FlatId",
                 table: "TransferredFlats",
                 column: "FlatId");
@@ -338,15 +452,18 @@ namespace Persistence.Migrations
                 column: "TransmitterId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UnitImages_FlatId1",
+                name: "IX_UnitImages_FlatId",
                 table: "UnitImages",
-                column: "FlatId1");
+                column: "FlatId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "ActivityLogs");
+
+            migrationBuilder.DropTable(
+                name: "AllotMents");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -367,6 +484,12 @@ namespace Persistence.Migrations
                 name: "Bookings");
 
             migrationBuilder.DropTable(
+                name: "Images");
+
+            migrationBuilder.DropTable(
+                name: "OrderDetails");
+
+            migrationBuilder.DropTable(
                 name: "TransferredFlats");
 
             migrationBuilder.DropTable(
@@ -376,10 +499,13 @@ namespace Persistence.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Flats");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

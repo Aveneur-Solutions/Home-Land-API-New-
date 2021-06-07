@@ -8,10 +8,11 @@ namespace Domain.UnitBooking
     {
         public string Id { get; set; }
         public DateTime OrderDate { get; set; }
-        public string TrasnsactionId { get; set; }
+        public string TransactionId { get; set; }
+        public decimal Amount { get; set; }
         public AppUser User { get; set; }
         public string UserId { get; set; }
         public bool PaymentConfirmed { get; set; }
-        public ICollection<Flat> Flats { get; set; }
+        public ICollection<OrderDetails> OrderDetails { get; set; }
     }
 }

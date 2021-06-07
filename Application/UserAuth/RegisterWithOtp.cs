@@ -67,7 +67,7 @@ namespace Application.UserAuth
                         Role = roleName
                     };
                 }
-                else throw new RestException(HttpStatusCode.Unauthorized, new { error = "bhung bhang credentials dile dhukte parben na" });
+                else throw new RestException(HttpStatusCode.Unauthorized, new { error = "Incorrect OTP" });
             }
         }
     }
