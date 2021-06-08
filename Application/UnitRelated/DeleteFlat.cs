@@ -35,14 +35,12 @@ namespace Application.UnitRelated
 
                     var result = await _context.SaveChangesAsync() > 0;
                     if (result) return Unit.Value;
+                    else throw new RestException(HttpStatusCode.BadRequest,new {error ="Can't delete a booked unit."});
                 }
-                catch (Exception)
+                catch (RestException)
                 {
                     throw;
                 }
-
-
-
                 throw new System.NotImplementedException();
             }
         }

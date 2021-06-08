@@ -10,8 +10,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(HomelandContext))]
-    [Migration("20210607083900_NewLatestMigration")]
-    partial class NewLatestMigration
+    [Migration("20210608190206_LatestMigration")]
+    partial class LatestMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -511,12 +511,13 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.UnitBooking.OrderDetails", b =>
                 {
                     b.HasOne("Domain.UnitBooking.Flat", "Flat")
-                        .WithMany()
+                        .WithMany("OrderDetails")
                         .HasForeignKey("FlatId");
 
                     b.HasOne("Domain.UnitBooking.Order", "Order")
                         .WithMany("OrderDetails")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Domain.UnitBooking.Transfer", b =>

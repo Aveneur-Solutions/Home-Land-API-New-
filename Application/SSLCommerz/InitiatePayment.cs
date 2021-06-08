@@ -90,7 +90,7 @@ namespace Application.SSLCommerz
                 PostData.Add("tran_id", order.TransactionId);
                 PostData.Add("product_category", "Real Estate");
                 PostData.Add("success_url", "https://homeland.aveneur.com/api/Payment/success");
-                PostData.Add("fail_url", "http://betahomeland.aveneur.com//#/failedPayment"); 
+                PostData.Add("fail_url", "https://homeland.aveneur.com/api/Payment/failed"); 
                 PostData.Add("cancel_url", "http://betahomeland.aveneur.com//#/cancelled"); 
                 PostData.Add("version", "3.00");
                 PostData.Add("cus_name", user.FirstName + " " + user.LastName);

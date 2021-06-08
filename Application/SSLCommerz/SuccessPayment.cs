@@ -18,7 +18,7 @@ namespace Application.SSLCommerz
         public class Command : IRequest
         {
             public string status { get; set; }
-            public DateTime Password { get; set; }
+            public DateTime tran_date { get; set; }
             public string tran_id { get; set; }
             public string val_id { get; set; }
             public decimal amount { get; set; }

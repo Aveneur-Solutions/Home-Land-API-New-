@@ -23,6 +23,14 @@ namespace API.Controllers
           if(command.status == "VALID")  return Redirect(command.value_c);
           else return Redirect(command.value_d);
         }
+        [HttpPost("failed")]
+        [AllowAnonymous]
+        public async Task<ActionResult> FailedPayment([FromForm]FailedPayment.Command command)
+        {
+          await Mediator.Send(command);
+            return Redirect(command.value_d);
+    
+        }
         [HttpPost("ipn")]
         [AllowAnonymous]
         public async Task<ActionResult<Unit>> IpnListener(IPNListener.Command command)
