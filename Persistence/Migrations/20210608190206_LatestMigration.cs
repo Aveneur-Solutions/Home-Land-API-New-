@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Persistence.Migrations
 {
-    public partial class NewLatestMigration : Migration
+    public partial class LatestMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -359,7 +359,7 @@ namespace Persistence.Migrations
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

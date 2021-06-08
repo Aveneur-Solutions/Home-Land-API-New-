@@ -32,7 +32,11 @@ namespace Persistence
                    .WithOne(x => x.Flat)
                    .HasForeignKey(x => x.FlatId)
                    .OnDelete(DeleteBehavior.Cascade);
-            
+            builder.Entity<Order>()
+                   .HasMany<OrderDetails>(x => x.OrderDetails)
+                   .WithOne(x => x.Order)
+                   .HasForeignKey(x => x.OrderId)
+                   .OnDelete(DeleteBehavior.Cascade);
             builder.Entity<Order>()
                    .Property(p => p.Amount)
                    .HasColumnType("decimal(18,4)");

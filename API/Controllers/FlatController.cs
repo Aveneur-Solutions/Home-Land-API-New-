@@ -87,16 +87,15 @@ namespace API.Controllers
         }
         [HttpPost("placeOrder")]
         [Authorize(Roles = "User")]
-        public async Task<ActionResult<OrderConfirmedDto>> BookFlat(PlaceOrder.Command command)
+        public async Task<ActionResult<OrderConfirmedDto>> PlaceOrder(PlaceOrder.Command command)
         {
             return await Mediator.Send(command);
         }
-        [HttpPost("bookNow")]
-
+        [HttpDelete("cancelOrder/{orderId}")]
         [Authorize(Roles = "User")]
-        public async Task<ActionResult<Unit>> BookFlat(BookFlat.Command command)
-        {
-            return await Mediator.Send(command);
+        public async Task<ActionResult<Unit>> CancelOrder(string orderId)
+        {            
+            return await Mediator.Send(new CancelOrder.Command{OrderId = orderId});
         }
 
         [HttpPost("transferNow")]
