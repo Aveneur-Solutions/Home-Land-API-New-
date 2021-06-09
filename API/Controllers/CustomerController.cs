@@ -25,5 +25,10 @@ namespace API.Controllers
         {
             return await Mediator.Send(new MyTransfers.Query { });
         }
+        [HttpGet("unPaidOrderDetails")]
+        public async Task<ActionResult<OrderDetailsDTO>> UnpaidOrderDetails()
+        {
+            return await Mediator.Send(new UnpaidOrder.Query {});
+        }
     }
 }

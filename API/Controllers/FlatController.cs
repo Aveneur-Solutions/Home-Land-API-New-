@@ -112,8 +112,5 @@ namespace API.Controllers
         {
             return await Mediator.Send(command);
         }
-
-      
-
     }
 }
