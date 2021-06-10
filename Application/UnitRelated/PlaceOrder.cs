@@ -45,9 +45,7 @@ namespace Application.UnitRelated
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.PhoneNumber == _userAccessor.GetUserPhoneNo());
                 if (user == null) throw new RestException(HttpStatusCode.NotFound, new { error = "You don't have any account here with this number . sorry" });
                 var order = await _context.Orders.FirstOrDefaultAsync(x=> x.Id == request.OrderId);
-                if(order != null) throw new RestException(HttpStatusCode.Conflict, new { error = "Duplicate Order Id found. Either you've already ordered or some technical problem" });
-
-                var transactionId = "Trx" + DateTime.Now.ToString("ddmmyyhhmmss");
+                if(order != null) throw new RestException(HttpStatusCode.Conflict, new { error = "Duplicate Order Id found. Either you've already ordered or some technical problem" });                var transactionId = "Trx" + DateTime.Now.ToString("ddmmyyhhmmss");
                 var newOrder = new Order
                 {
                     Id = request.OrderId,

@@ -42,12 +42,13 @@ namespace Application.Customer
                     .Where(x => !x.PaymentConfirmed)
                     .FirstOrDefaultAsync(x => x.UserId == user.Id);
                     
-                    if(order == null) throw new RestException(HttpStatusCode.NotFound,new {error = "No unpaid order found"});
+                    if(order == null) throw new RestException(HttpStatusCode.OK,new {error = "No order"});
 
                     var orderDetails = new OrderDetailsDTO {
                       Flats = new List<Flat>{},
                       Amount = order.Amount,
-                      TotalUnits = order.OrderDetails.Count
+                      TotalUnits = order.OrderDetails.Count,
+                      OrderId = order.Id
                     };
 
                     foreach(var orderDetails1 in order.OrderDetails) 
