@@ -51,7 +51,7 @@ namespace Application.Customer
 
                     return mappedBookings;
                 }
-                else throw new RestException(HttpStatusCode.Forbidden,new {error ="Power er misuse kora uchit na . ei Api shudhu Customer er"});
+                else throw new RestException(HttpStatusCode.Forbidden,new {error ="You have no transfers"});
             }
         }
     }

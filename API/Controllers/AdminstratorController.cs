@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Adminstrator;
+using Application.Customer;
 using Application.SSLCommerz;
 using Application.UnitRelated;
 using Domain.Common;
@@ -48,11 +49,16 @@ namespace API.Controllers
         {
             return await Mediator.Send(new UnbookFlat.Command { FlatId = id });
         }
+        [HttpGet("customerDetails/{phoneNumber}")]
+        public async Task<ActionResult<CustomerDetailsDTO>> CustomerDetails(string phoneNumber)
+        {
+            return await Mediator.Send(new CustomerDetails.Query { PhoneNumber = phoneNumber });
+        }
         [HttpGet("stats")]
         public async Task<ActionResult<StatDTO>> GetStats()
         {
             return await Mediator.Send(new Stat.Query());
         }
-        
+
     }
 }
