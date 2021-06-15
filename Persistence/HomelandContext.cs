@@ -40,6 +40,8 @@ namespace Persistence
             builder.Entity<Order>()
                    .Property(p => p.Amount)
                    .HasColumnType("decimal(18,4)");
+            
+         
 
         }
     }

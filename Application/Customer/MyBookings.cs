@@ -48,7 +48,7 @@ namespace Application.Customer
                     return mappedFlats;
 
                 }
-                else throw new RestException(HttpStatusCode.Forbidden, new { error = "Power er misuse kora uchit na . ei Api shudhu Customer er" });
+                else throw new RestException(HttpStatusCode.Forbidden, new { error = "You have no bookings" });
                 // var role = _userAccessor.GetUserRole();
                 // if (role == "User")
                 // {
