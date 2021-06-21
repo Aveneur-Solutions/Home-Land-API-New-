@@ -32,8 +32,7 @@ namespace Application.UnitRelated
             {
                 var flat = await _context.Flats.Include(x => x.Images).Include(x => x.Building).FirstOrDefaultAsync(x => x.Id == request.ID);
 
-                if (flat == null) throw new RestException(HttpStatusCode.NotFound, new { error = "No flatt found with the given id" });
-
+                if (flat == null) throw new RestException(HttpStatusCode.NotFound, new { error = "No flat found with the given id" });
 
                 return _mapper.Map<Flat,FlatDTO>(flat);
             }
