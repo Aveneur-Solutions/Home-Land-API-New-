@@ -29,8 +29,8 @@ namespace Application.UnitRelated
 
             public async Task<List<BuildingDTO>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var buildings = await _context.Buildings.Include(x => x.Flats).AsNoTracking().ToListAsync();
-
+                var buildings = await _context.Buildings.Include(x => x.Flats).ThenInclude(x => x.Images).AsNoTracking().ToListAsync();
+                
                 var mappedBuildings = _mapper.Map<List<Building>,List<BuildingDTO>>(buildings);
                 
                 return mappedBuildings;
