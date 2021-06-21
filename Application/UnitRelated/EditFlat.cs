@@ -9,6 +9,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.UnitRelated
@@ -66,7 +67,8 @@ namespace Application.UnitRelated
                 var flat = await _context.Flats.FindAsync(request.Id);
 
                 if (flat == null) throw new RestException(HttpStatusCode.NotFound, new { error = " No Flat found with the given id" });
-
+                var building = await _context.Buildings.FirstOrDefaultAsync(x => x.BuildingNumber == request.BuildingNumber);
+                if(building == null) throw new RestException(HttpStatusCode.NotFound,new {error="No building found"});
                 flat.Id = request.Id;
                 flat.Level = int.Parse(request.Level);
                 flat.NoOfBalconies = int.Parse(request.NoOfBalconies);
@@ -75,7 +77,7 @@ namespace Application.UnitRelated
                 flat.Price = double.Parse(request.Price);
                 flat.Size = int.Parse(request.Size);
                 flat.BookingPrice = double.Parse(request.BookingPrice);
-                flat.BuildingNumber = int.Parse(request.BuildingNumber);
+                flat.Building = building;
                 flat.DownPaymentDays = int.Parse(request.DownPaymentDays);
                 flat.NetArea = int.Parse(request.NetArea);
                 flat.CommonArea = int.Parse(request.CommonArea);
