@@ -1,11 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Domain.DTOs;
-using Domain.Errors;
 using Domain.UnitBooking;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -13,13 +10,13 @@ using Persistence;
 
 namespace Application.UnitRelated
 {
-    public class ViewFlats
+    public class BuildingList
     {
-        public class Query : IRequest<List<FlatDTO>>
+        public class Query : IRequest<List<BuildingDTO>>
         {
 
         }
-        public class Handler : IRequestHandler<Query, List<FlatDTO>>
+        public class Handler : IRequestHandler<Query, List<BuildingDTO>>
         {
             private readonly HomelandContext _context;
             private readonly IMapper _mapper;
@@ -30,15 +27,14 @@ namespace Application.UnitRelated
                 _context = context;
             }
 
-            public async Task<List<FlatDTO>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<BuildingDTO>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var flats = await _context.Flats.Include(x => x.Images).Include(x => x.Building).AsNoTracking().ToListAsync();
+                var buildings = await _context.Buildings.Include(x => x.Flats).AsNoTracking().ToListAsync();
 
-                var mappedFlats = _mapper.Map<List<Flat>,List<FlatDTO>>(flats);
+                var mappedBuildings = _mapper.Map<List<Building>,List<BuildingDTO>>(buildings);
                 
-                return mappedFlats;
+                return mappedBuildings;
             }
         }
-
     }
 }

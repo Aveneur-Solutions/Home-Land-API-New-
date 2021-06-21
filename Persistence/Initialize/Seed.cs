@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Domain.UnitBooking;
 using Domain.UserAuth;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Initialize
 {
@@ -28,7 +29,6 @@ namespace Persistence.Initialize
                 foreach (var role in roles)
                 {
                     await roleManager.CreateAsync(role);
-
                 }
 
             }
@@ -97,15 +97,103 @@ namespace Persistence.Initialize
                 await userManager.AddToRoleAsync(adminUser, "Super Admin");
 
             }
+            if (!context.Buildings.Any())
+            {
+                var buildings = new List<Building>{
+                     new Building{
+                         BuildingNumber = "1",
+                         Image = "\\Building\\Building.jpg"
+                     },
+                     new Building{
+                         BuildingNumber = "2",
+                         Image = "\\Building\\Building.jpg"
+                     },
+                     new Building{
+                         BuildingNumber = "3",
+                         Image = "\\Building\\Building.jpg"
+                     },
+                     new Building{
+                         BuildingNumber = "4",
+                         Image = "\\Building\\Building.jpg"
+                     },
+                     new Building{
+                         BuildingNumber = "5",
+                         Image = "\\Building\\Building.jpg"
+                     },
+                     new Building{
+                         BuildingNumber = "6",
+                         Image = "\\Building\\Building.jpg"
+                     },
+                     new Building{
+                         BuildingNumber = "7",
+                         Image = "\\Building\\Building.jpg"
+                     },
+                     new Building{
+                         BuildingNumber = "8",
+                         Image = "\\Building\\Building.jpg"
+                     },
+                     new Building{
+                         BuildingNumber = "9",
+                         Image = "\\Building\\Building.jpg"
+                     },
+                     new Building{
+                         BuildingNumber = "10",
+                         Image = "\\Building\\Building.jpg"
+                     },
+                     new Building{
+                         BuildingNumber = "11",
+                         Image = "\\Building\\Building.jpg"
+                     },
+                     new Building{
+                         BuildingNumber = "12",
+                         Image = "\\Building\\Building.jpg"
+                     },
+                     new Building{
+                         BuildingNumber = "13",
+                         Image = "\\Building\\Building.jpg"
+                     },
+                     new Building{
+                         BuildingNumber = "14",
+                         Image = "\\Building\\Building.jpg"
+                     },
+                     new Building{
+                         BuildingNumber = "15",
+                         Image = "\\Building\\Building.jpg"
+                     },
+                     new Building{
+                         BuildingNumber = "16",
+                         Image = "\\Building\\Building.jpg"
+                     },
+                     new Building{
+                         BuildingNumber = "17",
+                         Image = "\\Building\\Building.jpg"
+                     },
+                     new Building{
+                         BuildingNumber = "18",
+                         Image = "\\Building\\Building.jpg"
+                     },
+                     new Building{
+                         BuildingNumber = "19",
+                         Image = "\\Building\\Building.jpg"
+                     },
+                     new Building{
+                         BuildingNumber = "20",
+                         Image = "\\Building\\Building.jpg"
+                     }
+                };
+                await context.Buildings.AddRangeAsync(buildings);
+                await context.SaveChangesAsync();
+            }
             if (!context.Flats.Any())
             {
+                var building = await context.Buildings.FirstOrDefaultAsync();
                 var flats = new List<Flat>{
                     new Flat{
                     Id = "HL01",
                     Size = 1000,
                     Price = 3300000,
                     Level = 10,
-                    BuildingNumber = 102,
+                    Building = building,
                     NoOfBalconies = 3,
                     NoOfBaths =2,
                     NoOfBedrooms = 4,
@@ -122,7 +210,7 @@ namespace Persistence.Initialize
                     Size = 1000,
                     Price = 3300000,
                     Level = 10,
-                    BuildingNumber = 102,
+                    Building = building,
                     NoOfBalconies = 3,
                     NoOfBaths =2,
                     NoOfBedrooms = 4,
@@ -139,7 +227,7 @@ namespace Persistence.Initialize
                     Size = 1000,
                     Price = 3300000,
                     Level = 10,
-                    BuildingNumber = 102,
+                    Building = building,
                     NoOfBalconies = 3,
                     NoOfBaths =2,
                     NoOfBedrooms = 4,
@@ -156,7 +244,7 @@ namespace Persistence.Initialize
                     Size = 1000,
                     Price = 3300000,
                     Level = 10,
-                    BuildingNumber = 102,
+                    Building = building,
                     NoOfBalconies = 3,
                     NoOfBaths =2,
                     NoOfBedrooms = 4,
@@ -173,7 +261,7 @@ namespace Persistence.Initialize
                     Size = 1000,
                     Price = 3300000,
                     Level = 10,
-                    BuildingNumber = 102,
+                    Building = building,
                     NoOfBalconies = 3,
                     NoOfBaths =2,
                     NoOfBedrooms = 4,
@@ -190,7 +278,7 @@ namespace Persistence.Initialize
                     Size = 1000,
                     Price = 3300000,
                     Level = 10,
-                    BuildingNumber = 102,
+                    Building = building,
                     NoOfBalconies = 3,
                     NoOfBaths =2,
                     NoOfBedrooms = 4,
@@ -207,7 +295,7 @@ namespace Persistence.Initialize
                     Size = 1000,
                     Price = 3300000,
                     Level = 10,
-                    BuildingNumber = 102,
+                     Building = building,
                     NoOfBalconies = 3,
                     NoOfBaths =2,
                     NoOfBedrooms = 4,
@@ -224,7 +312,7 @@ namespace Persistence.Initialize
                     Size = 1000,
                     Price = 3300000,
                     Level = 10,
-                    BuildingNumber = 102,
+                     Building = building,
                     NoOfBalconies = 3,
                     NoOfBaths =2,
                     NoOfBedrooms = 4,
@@ -241,7 +329,7 @@ namespace Persistence.Initialize
                     Size = 1000,
                     Price = 3300000,
                     Level = 10,
-                    BuildingNumber = 102,
+                     Building = building,
                     NoOfBalconies = 3,
                     NoOfBaths =2,
                     NoOfBedrooms = 4,
@@ -258,7 +346,7 @@ namespace Persistence.Initialize
                     Size = 1000,
                     Price = 3300000,
                     Level = 10,
-                    BuildingNumber = 102,
+                     Building = building,
                     NoOfBalconies = 3,
                     NoOfBaths =2,
                     NoOfBedrooms = 4,
@@ -275,7 +363,7 @@ namespace Persistence.Initialize
                     Size = 1000,
                     Price = 3300000,
                     Level = 10,
-                    BuildingNumber = 102,
+                     Building = building,
                     NoOfBalconies = 3,
                     NoOfBaths =2,
                     NoOfBedrooms = 4,
@@ -292,7 +380,7 @@ namespace Persistence.Initialize
                     Size = 1000,
                     Price = 3300000,
                     Level = 10,
-                    BuildingNumber = 102,
+                     Building = building,
                     NoOfBalconies = 3,
                     NoOfBaths =2,
                     NoOfBedrooms = 4,
@@ -309,7 +397,7 @@ namespace Persistence.Initialize
                     Size = 1000,
                     Price = 3300000,
                     Level = 10,
-                    BuildingNumber = 102,
+                     Building = building,
                     NoOfBalconies = 3,
                     NoOfBaths =2,
                     NoOfBedrooms = 4,
@@ -326,7 +414,7 @@ namespace Persistence.Initialize
                     Size = 1000,
                     Price = 3300000,
                     Level = 10,
-                    BuildingNumber = 102,
+                     Building = building,
                     NoOfBalconies = 3,
                     NoOfBaths =2,
                     NoOfBedrooms = 4,
@@ -343,7 +431,7 @@ namespace Persistence.Initialize
                     Size = 1000,
                     Price = 3300000,
                     Level = 10,
-                    BuildingNumber = 102,
+                     Building = building,
                     NoOfBalconies = 3,
                     NoOfBaths =2,
                     NoOfBedrooms = 4,
@@ -360,7 +448,7 @@ namespace Persistence.Initialize
                     Size = 1000,
                     Price = 3300000,
                     Level = 10,
-                    BuildingNumber = 102,
+                     Building = building,
                     NoOfBalconies = 3,
                     NoOfBaths =2,
                     NoOfBedrooms = 4,

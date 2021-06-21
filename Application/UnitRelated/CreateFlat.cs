@@ -9,6 +9,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.UnitRelated
@@ -64,14 +65,15 @@ namespace Application.UnitRelated
             {
                 var flat = await _context.Flats.FindAsync(request.Id);
                 if(flat != null) throw new RestException(HttpStatusCode.Conflict,new {error ="A flat with the given Id already exists"});
-
+                var building = await _context.Buildings.FirstOrDefaultAsync(x => x.BuildingNumber == request.BuildingNumber);
+                if(building == null) throw new RestException(HttpStatusCode.NotFound,new {error="No building found"});
                  flat = new Flat
                 {
                     Id = request.Id,
                     Size = int.Parse(request.Size),
                     Price = double.Parse(request.Price),
                     Level = int.Parse(request.Level),
-                    BuildingNumber = int.Parse(request.BuildingNumber),
+                    Building = building,
                     NoOfBalconies = int.Parse(request.NoOfBalconies),
                     NoOfBaths = int.Parse(request.NoOfBaths),
                     NoOfBedrooms = int.Parse(request.NoOfBedrooms),

@@ -19,6 +19,12 @@ namespace API.Controllers
         {
             return await Mediator.Send(new ViewFlats.Query());
         }
+        [HttpGet("buildings")]
+        [AllowAnonymous]
+        public async Task<ActionResult<List<BuildingDTO>>> BuildingList()
+        {
+            return await Mediator.Send(new BuildingList.Query());
+        }
         [HttpGet("featured")]
         [AllowAnonymous]
         public async Task<ActionResult<List<FlatDTO>>> FeaturedFlatList()

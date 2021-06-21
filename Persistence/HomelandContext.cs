@@ -12,6 +12,7 @@ namespace Persistence
         public HomelandContext(DbContextOptions<HomelandContext> options) : base(options)
         {
         }
+        public DbSet<Building> Buildings { get; set; }
         public DbSet<Flat> Flats { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Transfer> TransferredFlats { get; set; }
