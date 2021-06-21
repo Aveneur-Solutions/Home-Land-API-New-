@@ -30,7 +30,7 @@ namespace Application.UnitRelated
 
             public async Task<FlatDTO> Handle(Query request, CancellationToken cancellationToken)
             {
-                var flat = await _context.Flats.Include(x => x.Images).FirstOrDefaultAsync(x => x.Id == request.ID);
+                var flat = await _context.Flats.Include(x => x.Images).Include(x => x.Building).FirstOrDefaultAsync(x => x.Id == request.ID);
 
                 if (flat == null) throw new RestException(HttpStatusCode.NotFound, new { error = "No flatt found with the given id" });
 
