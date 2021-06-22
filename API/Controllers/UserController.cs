@@ -63,5 +63,10 @@ namespace API.Controllers
         {
            return await Mediator.Send(command);
         }
+        [HttpPost("UpdateProfile")]
+        public async Task<ActionResult<Unit>> UpdateProfile([FromForm]UpdateProfile.Command command)
+        {
+           return await Mediator.Send(command);
+        }
     }
 }

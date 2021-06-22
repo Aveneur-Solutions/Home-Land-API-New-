@@ -50,7 +50,8 @@ namespace Application.UserAuth
                     Address = user.Address,
                     NID = user.NID,
                     Token = _jwtGenerator.CreateToken(user, roleName),
-                    ProfileImage = user.ProfileImage
+                    ProfileImage = user.ProfileImage,
+                    Email = user.Email
                 };
             }
         }

@@ -73,7 +73,8 @@ namespace Application.UserAuth
                         NID = user.NID,
                         Token = _jwtGenerator.CreateToken(user, roleName),
                         Role = roleName,
-                        ProfileImage = user.ProfileImage
+                        ProfileImage = user.ProfileImage,
+                        Email = user.Email
                     };
                 }
                 else throw new RestException(HttpStatusCode.Unauthorized, new { error = "Wrong OTP" });

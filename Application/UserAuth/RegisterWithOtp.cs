@@ -64,7 +64,9 @@ namespace Application.UserAuth
                         Address = user.Address,
                         NID = user.NID,
                         PhoneNumber = user.PhoneNumber,
-                        Role = roleName
+                        Role = roleName,
+                        Email = user.Email,
+                        ProfileImage = user.ProfileImage
                     };
                 }
                 else throw new RestException(HttpStatusCode.Unauthorized, new { error = "Incorrect OTP" });

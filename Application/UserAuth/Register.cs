@@ -63,7 +63,8 @@ namespace Application.UserAuth
                         FirstName = request.FirstName,
                         LastName = request.LastName,
                         PhoneNumber = request.PhoneNumber,
-                        UserName = request.FirstName
+                        UserName = request.FirstName,
+                        ProfileImage="\\User\\user.png"
                     };
                     // string sixDigitNumber = RandomDigitGenerator.SixDigitNumber();
                     // user.OTP = sixDigitNumber;

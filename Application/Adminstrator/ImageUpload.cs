@@ -60,7 +60,7 @@ namespace Application.Adminstrator
                     if (result) return Unit.Value;
 
                 }
-                throw new RestException(HttpStatusCode.BadRequest, new { error = "Couldn't Upload the Images" });
+                throw new RestException(HttpStatusCode.NoContent, new { error = "Couldn't Upload the Images" });
             }
         }
     }
