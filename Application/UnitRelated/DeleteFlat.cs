@@ -28,20 +28,14 @@ namespace Application.UnitRelated
                 var flat = await _context.Flats.FindAsync(request.Id);
 
                 if (flat == null) throw new RestException(HttpStatusCode.NotFound, new { error = "No flat found" });
-
-                try
-                {
+   
                     _context.Flats.Remove(flat);
 
                     var result = await _context.SaveChangesAsync() > 0;
                     if (result) return Unit.Value;
                     else throw new RestException(HttpStatusCode.BadRequest,new {error ="Can't delete a booked unit."});
-                }
-                catch (RestException)
-                {
-                    throw;
-                }
-                throw new System.NotImplementedException();
+              
+                
             }
         }
     }

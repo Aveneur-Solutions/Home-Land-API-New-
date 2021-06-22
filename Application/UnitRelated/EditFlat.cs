@@ -68,7 +68,7 @@ namespace Application.UnitRelated
 
                 if (flat == null) throw new RestException(HttpStatusCode.NotFound, new { error = " No Flat found with the given id" });
                 var building = await _context.Buildings.FirstOrDefaultAsync(x => x.BuildingNumber == request.BuildingNumber);
-                if(building == null) throw new RestException(HttpStatusCode.NotFound,new {error="No building found"});
+                if (building == null) throw new RestException(HttpStatusCode.NotFound, new { error = "No building found" });
                 flat.Id = request.Id;
                 flat.Level = int.Parse(request.Level);
                 flat.NoOfBalconies = int.Parse(request.NoOfBalconies);
@@ -83,24 +83,28 @@ namespace Application.UnitRelated
                 flat.CommonArea = int.Parse(request.CommonArea);
 
                 var imageList = new List<IFormFile>();
-                if(request.Images != null) imageList.Add(request.Images);
-                var images = FileUpload.UploadImage(imageList, _env, "Flat");
-                var imageListToBeAdded = new List<FlatImage> { };
-
-                foreach (var image in images)
+                if (request.Images != null)
                 {
-                    var imageToBeAdded = new FlatImage
+                    imageList.Add(request.Images);
+                    var images = FileUpload.UploadImage(imageList, _env, "Flat");
+                    var imageListToBeAdded = new List<FlatImage> { };
+
+                    foreach (var image in images)
                     {
-                        Flat = flat,
-                        ImageLocation = image
-                    };
-                    imageListToBeAdded.Add(imageToBeAdded);
+                        var imageToBeAdded = new FlatImage
+                        {
+                            Flat = flat,
+                            ImageLocation = image
+                        };
+                        imageListToBeAdded.Add(imageToBeAdded);
+                    }
+
+                    if (imageListToBeAdded.Count > 0)
+                    {
+                        await _context.UnitImages.AddRangeAsync(imageListToBeAdded);
+                    }
                 }
 
-                if (imageListToBeAdded.Count > 0)
-                {
-                    await _context.UnitImages.AddRangeAsync(imageListToBeAdded);
-                }
 
                 _context.Flats.Update(flat);
                 var result = await _context.SaveChangesAsync() > 0;

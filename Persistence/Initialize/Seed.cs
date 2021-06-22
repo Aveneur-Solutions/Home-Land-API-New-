@@ -44,7 +44,8 @@ namespace Persistence.Initialize
                         PhoneNumber = "+8801717755244",
                         NID = "123456789",
                         Address ="Dhanmondi,Dhaka,Bangladesh",
-                        PhoneNumberConfirmed = true
+                        PhoneNumberConfirmed = true,
+                        ProfileImage="\\User\\user.png"
                     },
                      new AppUser{
                          Id = "U3",
@@ -54,7 +55,8 @@ namespace Persistence.Initialize
                         PhoneNumber = "+8801716590911",
                         NID = "123456789",
                         Address ="Dhanmondi,Dhaka,Bangladesh",
-                        PhoneNumberConfirmed = true
+                        PhoneNumberConfirmed = true,
+                         ProfileImage="\\User\\user.png"
                     },
                     new AppUser{
                         Id = "U4",
@@ -64,7 +66,8 @@ namespace Persistence.Initialize
                         PhoneNumber = "+8801625203488",
                         NID = "123456789",
                         Address ="Dhanmondi,Dhaka,Bangladesh",
-                        PhoneNumberConfirmed = true
+                        PhoneNumberConfirmed = true,
+                         ProfileImage="\\User\\user.png"
                     },
                     new AppUser{
                         Id = "U5",
@@ -74,7 +77,8 @@ namespace Persistence.Initialize
                         NID = "123456789",
                         Address ="Dhanmondi,Dhaka,Bangladesh",
                         PhoneNumber = "+8801837440069",
-                        PhoneNumberConfirmed = true
+                        PhoneNumberConfirmed = true,
+                        ProfileImage="\\User\\user.png"
                     }
                 };
                 foreach (var user in users)
@@ -91,7 +95,8 @@ namespace Persistence.Initialize
                     NID = "123456789",
                     Address = "Dhanmondi,Dhaka,Bangladesh",
                     PhoneNumber = "+8801680800602",
-                    PhoneNumberConfirmed = true
+                    PhoneNumberConfirmed = true,
+                    ProfileImage = "\\User\\user.png"
                 };
                 await userManager.CreateAsync(adminUser, "StrongP@ssw0rd");
                 await userManager.AddToRoleAsync(adminUser, "Super Admin");
