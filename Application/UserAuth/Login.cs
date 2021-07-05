@@ -58,13 +58,13 @@ namespace Application.UserAuth
                 if (result.Succeeded)
                 {
                     // Commented THis line temporarily
-                    // string sixDigitNumber = RandomDigitGenerator.SixDigitNumber(); // implemented in helper folder 
-                    // await AuthMessageSender.SendSmsAsync(request.PhoneNumber, sixDigitNumber, _configuration);
-                    
                     string sixDigitNumber = "000000";
+                    string message = "Your six digit OTP is"+sixDigitNumber+" Don't Share it with anybody";
+                    // string sixDigitNumber = RandomDigitGenerator.SixDigitNumber(); // implemented in helper folder 
+                    // AuthMessageSender.SendSms(request.PhoneNumber, sixDigitNumber, _configuration);                                    
                     user.OTP = sixDigitNumber;
                     await _userManager.UpdateAsync(user);
-                     return Unit.Value;
+                    return Unit.Value;
                 }
                 throw new RestException(HttpStatusCode.Unauthorized, new { error = "Couldn't log in" });
             }

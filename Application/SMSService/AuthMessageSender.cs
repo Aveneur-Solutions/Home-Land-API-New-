@@ -1,3 +1,7 @@
+using System;
+using System.IO;
+using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Twilio;
@@ -14,24 +18,46 @@ namespace Application.SMSService
             return Task.FromResult(0);
         }
 
-        public static Task SendSmsAsync(string number, string message, IConfiguration configuration)
+        public static void SendSms(string number, string message, IConfiguration configuration)
         {
-            // Plug in your SMS service here to send a text message.
-            // Your Account SID from twilio.com/console
-            // configuration["SMSAccountIdentification"];
-            var accountSid = "AC78bac3ee9dc04e78505c4b98ba63f839";
-            // Your Auth Token from twilio.com/console
-            // var authToken = configuration["SMSAccountPassword"];
-            var authToken = "c80056b3aeb5ae2de65717729e32c5ab";
-            // var fromNumber = configuration["SMSAccountFrom"];
-            var fromNumber = "+13479835360";
-
-            TwilioClient.Init(accountSid, authToken);
-
-            return MessageResource.CreateAsync(
-              to: new PhoneNumber(number),
-              from: new PhoneNumber(fromNumber),
-              body: message);
+                
+                String userid = "Ragib007"; //Your Login ID
+                String password = "75PBMHD8"; //Your Password
+                //Recipient Phone Number multiple number must be separated by comma
+                String messageToBeSent = System.Uri.EscapeUriString(message);
+                // Create a request using a URL that can receive a post.   
+                WebRequest request = WebRequest.Create("http://66.45.237.70/api.php");
+                // Set the Method property of the request to POST.  
+                request.Method = "POST";
+                // Create POST data and convert it to a byte array.  
+                string postData = "username=" + userid + "&password=" + password + "&number=" + number + "&message=" + message;
+                byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+                // Set the ContentType property of the WebRequest.  
+                request.ContentType = "application/x-www-form-urlencoded";
+                // Set the ContentLength property of the WebRequest.  
+                request.ContentLength = byteArray.Length;
+                // Get the request stream.  
+                Stream dataStream = request.GetRequestStream();
+                // Write the data to the request stream.  
+                dataStream.Write(byteArray, 0, byteArray.Length);
+                // Close the Stream object.  
+                dataStream.Close();
+                // Get the response.  
+                WebResponse response = request.GetResponse();
+                // Display the status.  
+                Console.WriteLine(((HttpWebResponse)response).StatusDescription);
+                // Get the stream containing content returned by the server.  
+                dataStream = response.GetResponseStream();
+                // Open the stream using a StreamReader for easy access.  
+                StreamReader reader = new StreamReader(dataStream);
+                // Read the content.  
+                string responseFromServer = reader.ReadToEnd();
+                // Display the content.  
+                Console.WriteLine(responseFromServer);
+                // Clean up the streams.  
+                reader.Close();
+                dataStream.Close();
+                response.Close();
         }
     }
 }
