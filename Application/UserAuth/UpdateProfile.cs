@@ -65,7 +65,7 @@ namespace Application.UserAuth
                 user.NID = request.NID;
                 if (request.ProfileImage != null)
                 {
-                    user.ProfileImage = FileUpload.UploadSingleImage(request.ProfileImage, _environment, "User");
+                    user.ProfileImage = FileUpload.UploadSingleFile(request.ProfileImage, _environment, "User");
                 }
 
                 var result = await _userManager.UpdateAsync(user);
