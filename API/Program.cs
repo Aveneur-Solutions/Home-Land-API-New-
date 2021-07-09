@@ -27,9 +27,10 @@ namespace API
                 {
                     var context = services.GetRequiredService<HomelandContext>();
                     var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                     //If any migration has not yet been migrated or no database is there it will solve the issue
                     context.Database.Migrate();
-                    Seed.SeedData(context, userManager).Wait();
+                    Seed.SeedData(context, userManager,roleManager).Wait();
                 }
                 catch (Exception ex)
                 {

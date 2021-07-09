@@ -10,8 +10,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(HomelandContext))]
-    [Migration("20210323071707_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20210621084118_Building Table added")]
+    partial class BuildingTableadded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,6 +38,47 @@ namespace Persistence.Migrations
                     b.ToTable("ActivityLogs");
                 });
 
+            modelBuilder.Entity("Domain.Common.Image", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ImageLocation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Section")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("Domain.UnitBooking.AllotMent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateAlloted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FlatId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FlatId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AllotMents");
+                });
+
             modelBuilder.Entity("Domain.UnitBooking.Booking", b =>
                 {
                     b.Property<Guid>("Id")
@@ -47,52 +88,39 @@ namespace Persistence.Migrations
                     b.Property<DateTime>("DateBooked")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("FlatId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UserId1")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("FlatId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Bookings");
                 });
 
-            modelBuilder.Entity("Domain.UnitBooking.TransferredUnit", b =>
+            modelBuilder.Entity("Domain.UnitBooking.Building", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("RecieverId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("BuildingNumber")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("TransferDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("TransmitterId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("UnitId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UnitId1")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RecieverId");
-
-                    b.HasIndex("TransmitterId");
-
-                    b.HasIndex("UnitId1");
-
-                    b.ToTable("TransferredUnits");
+                    b.ToTable("Buildings");
                 });
 
-            modelBuilder.Entity("Domain.UnitBooking.Unit", b =>
+            modelBuilder.Entity("Domain.UnitBooking.Flat", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -100,11 +128,17 @@ namespace Persistence.Migrations
                     b.Property<double>("BookingPrice")
                         .HasColumnType("float");
 
-                    b.Property<int>("BuildingNumber")
-                        .HasColumnType("int");
+                    b.Property<Guid>("BuildingId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("CommonArea")
+                        .HasColumnType("float");
 
                     b.Property<int>("DownPaymentDays")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsAlreadyTransferred")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsBooked")
                         .HasColumnType("bit");
@@ -117,6 +151,9 @@ namespace Persistence.Migrations
 
                     b.Property<int>("Level")
                         .HasColumnType("int");
+
+                    b.Property<double>("NetArea")
+                        .HasColumnType("float");
 
                     b.Property<int>("NoOfBalconies")
                         .HasColumnType("int");
@@ -135,29 +172,107 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Units");
+                    b.HasIndex("BuildingId");
+
+                    b.ToTable("Flats");
                 });
 
-            modelBuilder.Entity("Domain.UnitBooking.UnitImage", b =>
+            modelBuilder.Entity("Domain.UnitBooking.FlatImage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("FlatId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("ImageLocation")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UnitId")
-                        .HasColumnType("uniqueidentifier");
+                    b.HasKey("Id");
 
-                    b.Property<string>("UnitId1")
+                    b.HasIndex("FlatId");
+
+                    b.ToTable("UnitImages");
+                });
+
+            modelBuilder.Entity("Domain.UnitBooking.Order", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("PaymentConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("TransactionId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UnitId1");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("UnitImages");
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Domain.UnitBooking.OrderDetails", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FlatId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("OrderId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FlatId")
+                        .IsUnique()
+                        .HasFilter("[FlatId] IS NOT NULL");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderDetails");
+                });
+
+            modelBuilder.Entity("Domain.UnitBooking.Transfer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FlatId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RecieverId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("TransferDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TransmitterId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FlatId");
+
+                    b.HasIndex("RecieverId");
+
+                    b.HasIndex("TransmitterId");
+
+                    b.ToTable("TransferredFlats");
                 });
 
             modelBuilder.Entity("Domain.UserAuth.AppUser", b =>
@@ -167,6 +282,9 @@ namespace Persistence.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Birthdate")
                         .HasColumnType("datetime2");
@@ -194,6 +312,9 @@ namespace Persistence.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<string>("NID")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
@@ -213,6 +334,9 @@ namespace Persistence.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("ProfileImage")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -368,15 +492,71 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Domain.UnitBooking.AllotMent", b =>
+                {
+                    b.HasOne("Domain.UnitBooking.Flat", "Flat")
+                        .WithMany()
+                        .HasForeignKey("FlatId");
+
+                    b.HasOne("Domain.UserAuth.AppUser", "User")
+                        .WithMany("Allotments")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("Domain.UnitBooking.Booking", b =>
+                {
+                    b.HasOne("Domain.UnitBooking.Flat", "Flat")
+                        .WithMany()
+                        .HasForeignKey("FlatId");
+
+                    b.HasOne("Domain.UserAuth.AppUser", "User")
+                        .WithMany("Bookings")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Domain.UnitBooking.Flat", b =>
+                {
+                    b.HasOne("Domain.UnitBooking.Building", "Building")
+                        .WithMany("Flats")
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.UnitBooking.FlatImage", b =>
+                {
+                    b.HasOne("Domain.UnitBooking.Flat", "Flat")
+                        .WithMany("Images")
+                        .HasForeignKey("FlatId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Domain.UnitBooking.Order", b =>
                 {
                     b.HasOne("Domain.UserAuth.AppUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("Domain.UnitBooking.TransferredUnit", b =>
+            modelBuilder.Entity("Domain.UnitBooking.OrderDetails", b =>
                 {
+                    b.HasOne("Domain.UnitBooking.Flat", "Flat")
+                        .WithOne("OrderDetails")
+                        .HasForeignKey("Domain.UnitBooking.OrderDetails", "FlatId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Domain.UnitBooking.Order", "Order")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Domain.UnitBooking.Transfer", b =>
+                {
+                    b.HasOne("Domain.UnitBooking.Flat", "Flat")
+                        .WithMany()
+                        .HasForeignKey("FlatId");
+
                     b.HasOne("Domain.UserAuth.AppUser", "Reciever")
                         .WithMany()
                         .HasForeignKey("RecieverId");
@@ -384,17 +564,6 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.UserAuth.AppUser", "Transmitter")
                         .WithMany()
                         .HasForeignKey("TransmitterId");
-
-                    b.HasOne("Domain.UnitBooking.Unit", "Unit")
-                        .WithMany()
-                        .HasForeignKey("UnitId1");
-                });
-
-            modelBuilder.Entity("Domain.UnitBooking.UnitImage", b =>
-                {
-                    b.HasOne("Domain.UnitBooking.Unit", "Unit")
-                        .WithMany()
-                        .HasForeignKey("UnitId1");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

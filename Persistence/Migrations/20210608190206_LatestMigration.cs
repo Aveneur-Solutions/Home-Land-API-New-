@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Persistence.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class LatestMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -56,7 +56,10 @@ namespace Persistence.Migrations
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     Birthdate = table.Column<DateTime>(nullable: false),
-                    OTP = table.Column<string>(nullable: true)
+                    OTP = table.Column<string>(nullable: true),
+                    NID = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    ProfileImage = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -64,7 +67,7 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Units",
+                name: "Flats",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -79,11 +82,27 @@ namespace Persistence.Migrations
                     BookingPrice = table.Column<double>(nullable: false),
                     IsBooked = table.Column<bool>(nullable: false),
                     IsSold = table.Column<bool>(nullable: false),
-                    DownPaymentDays = table.Column<int>(nullable: false)
+                    DownPaymentDays = table.Column<int>(nullable: false),
+                    NetArea = table.Column<double>(nullable: false),
+                    CommonArea = table.Column<double>(nullable: false),
+                    IsAlreadyTransferred = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Units", x => x.Id);
+                    table.PrimaryKey("PK_Flats", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Images",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    ImageLocation = table.Column<string>(nullable: true),
+                    Section = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -193,55 +212,108 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Bookings",
+                name: "Orders",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false),
-                    UserId1 = table.Column<string>(nullable: true),
-                    DateBooked = table.Column<DateTime>(nullable: false)
+                    Id = table.Column<string>(nullable: false),
+                    OrderDate = table.Column<DateTime>(nullable: false),
+                    TransactionId = table.Column<string>(nullable: true),
+                    Amount = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    PaymentConfirmed = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Bookings", x => x.Id);
+                    table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Bookings_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_Orders_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "TransferredUnits",
+                name: "AllotMents",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    UnitId = table.Column<int>(nullable: false),
-                    UnitId1 = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: true),
+                    DateAlloted = table.Column<DateTime>(nullable: false),
+                    FlatId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AllotMents", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AllotMents_Flats_FlatId",
+                        column: x => x.FlatId,
+                        principalTable: "Flats",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AllotMents_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Bookings",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    DateBooked = table.Column<DateTime>(nullable: false),
+                    FlatId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bookings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Bookings_Flats_FlatId",
+                        column: x => x.FlatId,
+                        principalTable: "Flats",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Bookings_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TransferredFlats",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    FlatId = table.Column<string>(nullable: true),
                     TransmitterId = table.Column<string>(nullable: true),
                     RecieverId = table.Column<string>(nullable: true),
                     TransferDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TransferredUnits", x => x.Id);
+                    table.PrimaryKey("PK_TransferredFlats", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TransferredUnits_AspNetUsers_RecieverId",
+                        name: "FK_TransferredFlats_Flats_FlatId",
+                        column: x => x.FlatId,
+                        principalTable: "Flats",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_TransferredFlats_AspNetUsers_RecieverId",
                         column: x => x.RecieverId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_TransferredUnits_AspNetUsers_TransmitterId",
+                        name: "FK_TransferredFlats_AspNetUsers_TransmitterId",
                         column: x => x.TransmitterId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_TransferredUnits_Units_UnitId1",
-                        column: x => x.UnitId1,
-                        principalTable: "Units",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -251,20 +323,54 @@ namespace Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    UnitId = table.Column<Guid>(nullable: false),
-                    UnitId1 = table.Column<string>(nullable: true),
+                    FlatId = table.Column<string>(nullable: true),
                     ImageLocation = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UnitImages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UnitImages_Units_UnitId1",
-                        column: x => x.UnitId1,
-                        principalTable: "Units",
+                        name: "FK_UnitImages_Flats_FlatId",
+                        column: x => x.FlatId,
+                        principalTable: "Flats",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderDetails",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    OrderId = table.Column<string>(nullable: true),
+                    FlatId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Flats_FlatId",
+                        column: x => x.FlatId,
+                        principalTable: "Flats",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AllotMents_FlatId",
+                table: "AllotMents",
+                column: "FlatId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AllotMents_UserId",
+                table: "AllotMents",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -306,35 +412,58 @@ namespace Persistence.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bookings_UserId1",
+                name: "IX_Bookings_FlatId",
                 table: "Bookings",
-                column: "UserId1");
+                column: "FlatId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TransferredUnits_RecieverId",
-                table: "TransferredUnits",
+                name: "IX_Bookings_UserId",
+                table: "Bookings",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_FlatId",
+                table: "OrderDetails",
+                column: "FlatId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_OrderId",
+                table: "OrderDetails",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_UserId",
+                table: "Orders",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TransferredFlats_FlatId",
+                table: "TransferredFlats",
+                column: "FlatId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TransferredFlats_RecieverId",
+                table: "TransferredFlats",
                 column: "RecieverId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TransferredUnits_TransmitterId",
-                table: "TransferredUnits",
+                name: "IX_TransferredFlats_TransmitterId",
+                table: "TransferredFlats",
                 column: "TransmitterId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TransferredUnits_UnitId1",
-                table: "TransferredUnits",
-                column: "UnitId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UnitImages_UnitId1",
+                name: "IX_UnitImages_FlatId",
                 table: "UnitImages",
-                column: "UnitId1");
+                column: "FlatId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "ActivityLogs");
+
+            migrationBuilder.DropTable(
+                name: "AllotMents");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -355,7 +484,13 @@ namespace Persistence.Migrations
                 name: "Bookings");
 
             migrationBuilder.DropTable(
-                name: "TransferredUnits");
+                name: "Images");
+
+            migrationBuilder.DropTable(
+                name: "OrderDetails");
+
+            migrationBuilder.DropTable(
+                name: "TransferredFlats");
 
             migrationBuilder.DropTable(
                 name: "UnitImages");
@@ -364,10 +499,13 @@ namespace Persistence.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "Units");
+                name: "Flats");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

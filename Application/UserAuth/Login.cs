@@ -51,26 +51,22 @@ namespace Application.UserAuth
             {
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
                 if (user == null)
-                    throw new RestException(HttpStatusCode.Unauthorized, new { error = "bhung bhang credentials dile dhukte parben na" });
+                    throw new RestException(HttpStatusCode.Unauthorized, new { error = "Incorrect phone number or password" });
                 var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
 
                 if (result.Succeeded)
                 {
-                  
-                    string sixDigitNumber = RandomDigitGenerator.SixDigitNumber(); // implemented in helper folder 
-                    await AuthMessageSender.SendSmsAsync(request.PhoneNumber, sixDigitNumber, _configuration);
+                    // Commented THis line temporarily
+                    string sixDigitNumber = "000000";
+                    string message = "Your six digit OTP is"+sixDigitNumber+" Don't Share it with anybody";
+                    // string sixDigitNumber = RandomDigitGenerator.SixDigitNumber(); // implemented in helper folder 
+                    // AuthMessageSender.SendSms(request.PhoneNumber, sixDigitNumber, _configuration);                                    
                     user.OTP = sixDigitNumber;
                     await _userManager.UpdateAsync(user);
-                    // return new UserDTO
-                    // {
-                    //     UserName = user.UserName,
-                    //     Email = user.Email,
-                    //     Token = _jwtGenerator.CreateToken(user)
-                    // };
-                     return Unit.Value;
+                    return Unit.Value;
                 }
-                throw new RestException(HttpStatusCode.Unauthorized, new { error = "bhung bhang credentials dile dhukte parben na" });
+                throw new RestException(HttpStatusCode.Unauthorized, new { error = "Couldn't log in" });
             }
         }
     }

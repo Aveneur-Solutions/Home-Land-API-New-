@@ -17,7 +17,7 @@ namespace Application.UserAuth
 {
     public class LoginWithOtp
     {
-          public class Query : IRequest<UserDTO>
+        public class Query : IRequest<UserDTO>
         {
             public string PhoneNumber { get; set; }
             public string Otp { get; set; }
@@ -44,30 +44,42 @@ namespace Application.UserAuth
                 _configuration = configuration;
                 _jwtGenerator = jwtGenerator;
                 _userManager = userManager;
-            
+
             }
 
             public async Task<UserDTO> Handle(Query request, CancellationToken cancellationToken)
             {
-                var user = await _context.Users.FirstOrDefaultAsync( x=> x.PhoneNumber == request.PhoneNumber);
+                var user = await _context.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
                 if (user == null)
-                    throw new RestException(HttpStatusCode.Unauthorized, new { error = "bhung bhang credentials dile dhukte parben na" });
+                    throw new RestException(HttpStatusCode.Unauthorized, new { error = "No user exists with this number" });
 
 
-                if(!String.IsNullOrEmpty(user.OTP) && user.OTP == request.Otp)
+                if (!String.IsNullOrEmpty(user.OTP) && user.OTP == request.Otp)
                 {
                     user.OTP = null;
                     await _userManager.UpdateAsync(user);
+
+                    string roleName = "";
+
+                    if (await _userManager.IsInRoleAsync(user, "Super Admin")) roleName = "Super Admin";
+                    else if (await _userManager.IsInRoleAsync(user, "Admin")) roleName = "Admin";
+                    else roleName = "User";
+
                     return new UserDTO
                     {
-                        Fullname = user.FirstName+" "+user.LastName,
+                        Fullname = user.FirstName + " " + user.LastName,
                         PhoneNumber = user.PhoneNumber,
-                        Token = _jwtGenerator.CreateToken(user)
+                        Address = user.Address,
+                        NID = user.NID,
+                        Token = _jwtGenerator.CreateToken(user, roleName),
+                        Role = roleName,
+                        ProfileImage = user.ProfileImage,
+                        Email = user.Email
                     };
                 }
-                else throw new RestException(HttpStatusCode.Unauthorized, new { error = "Faizlami Koren mia" });
-                
-               // throw new RestException(HttpStatusCode.Unauthorized, new { error = "bhung bhang credentials dile dhukte parben na" });
+                else throw new RestException(HttpStatusCode.Unauthorized, new { error = "Wrong OTP" });
+
+                // throw new RestException(HttpStatusCode.Unauthorized, new { error = "bhung bhang credentials dile dhukte parben na" });
             }
         }
     }
