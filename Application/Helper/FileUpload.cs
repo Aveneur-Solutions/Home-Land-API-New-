@@ -45,7 +45,7 @@ namespace Application.Helper
 
 
         }
-        public static string UploadSingleImage(IFormFile file, IWebHostEnvironment environment, string folderName = null)
+        public static string UploadSingleFile(IFormFile file, IWebHostEnvironment environment, string folderName = null)
         {
             var fileName = "";
             if (file !=null)

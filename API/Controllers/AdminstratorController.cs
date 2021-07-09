@@ -5,6 +5,7 @@ using Application.Adminstrator;
 using Application.Customer;
 using Application.SSLCommerz;
 using Application.UnitRelated;
+using Domain.Announcements;
 using Domain.Common;
 using Domain.DTOs;
 using MediatR;
@@ -58,6 +59,22 @@ namespace API.Controllers
         public async Task<ActionResult<StatDTO>> GetStats()
         {
             return await Mediator.Send(new Stat.Query());
+        }
+         [HttpGet("announcements")]
+         [AllowAnonymous]
+        public async Task<ActionResult<List<Announcement>>> GetAnnouncements()
+        {
+            return await Mediator.Send(new ViewAnnouncements.Query());
+        }
+        [HttpPost("createAnnouncement")]
+        public async Task<ActionResult<Unit>> CreateAnnouncement([FromForm] CreateAnnouncement.Command command)
+        {
+            return await Mediator.Send(command);
+        }
+        [HttpDelete("deleteAnnouncement/{id}")]
+        public async Task<ActionResult<Unit>> DeleteAnnouncement(Guid id)
+        {
+            return await Mediator.Send(new DeleteAnnouncement.Command{Id = id});
         }
 
     }

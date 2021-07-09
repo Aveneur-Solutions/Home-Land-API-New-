@@ -1,4 +1,5 @@
 using Domain.ActivityTracking;
+using Domain.Announcements;
 using Domain.Common;
 using Domain.UnitBooking;
 using Domain.UserAuth;
@@ -22,6 +23,7 @@ namespace Persistence
         public DbSet<Image> Images { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
+        public DbSet<Announcement> Announcements { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
